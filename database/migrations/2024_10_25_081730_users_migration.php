@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Warga::class)->constrained()->onDelete('cascade');
+            $table->string('warga_id')->constrained('wargas', 'nik')->onDelete('cascade');
             $table->String('email');
             $table->String('no_hp');
             $table->String('password');

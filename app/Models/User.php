@@ -6,16 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-
-    /**
-     * Primary key tabel.
-     */
-    protected $primaryKey = 'id';
 
     /**
      * Kolom yang dapat diisi secara massal.
@@ -45,21 +39,11 @@ class User extends Authenticatable
     ];
 
     /**
-     * Mutator untuk mengenkripsi password saat diset (gunakan plain string saat set).
-     */
-    protected function password(): Attribute
-    {
-        return Attribute::make(
-            set: fn($value) => bcrypt($value), // Jangan pakai Hash::make manual di luar
-        );
-    }
-
-    /**
      * Relasi ke tabel Warga.
      */
     public function warga()
     {
-        return $this->hasOne(Warga::class, 'id_warga', 'id_warga');
+        return $this->hasOne(Warga::class);
     }
 
     /**
@@ -73,11 +57,6 @@ class User extends Authenticatable
     public function getAuthIdentifier()
     {
         return $this->getKey();
-    }
-
-    public function getAuthPassword()
-    {
-        return $this->password;
     }
 
     public function getRememberToken()

@@ -1,9 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\ApiIuranRTController;
-use App\Http\Controllers\Api\ApiForgotPasswordController;
 use App\Http\Controllers\Api\AuthController;
 
 /*
@@ -26,8 +23,4 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('logout', 'logout');
         Route::get('me', 'me');
     });
-    Route::apiResource('iuranrt', ApiIuranRTController::class);
 });
-
-Route::post('/forgot-password/validate', [ApiForgotPasswordController::class, 'validateUser']);
-Route::post('/forgot-password/reset', [ApiForgotPasswordController::class, 'resetPassword']);

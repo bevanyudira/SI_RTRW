@@ -11,13 +11,74 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-
     /**
-     * Login user dan mendapatkan token
+     * @OA\Post(
+     *     path="/login",
+     *     summary="Login a user",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email", "password"},
+     *             @OA\Property(property="email", type="string", format="email", example="user@example.com"),
+     *             @OA\Property(property="password", type="string", format="password", example="secret123")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Login success",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="code", type="integer", example=200),
+     *             @OA\Property(property="message", type="string", example="Login success"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(property="token", type="string", example="1|longapitokenstring")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="User not activated",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="code", type="integer", example=403),
+     *             @OA\Property(property="message", type="string", example="You are unactivated"),
+     *             @OA\Property(property="data", type="object", nullable=true, example=null)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Invalid login credentials",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="code", type="integer", example=404),
+     *             @OA\Property(property="message", type="string", example="Login failed"),
+     *             @OA\Property(property="data", type="object", nullable=true, example=null)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation failed",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Validasi gagal"),
+     *             @OA\Property(property="errors", type="object", example={
+     *                 "email": {"The email field is required."},
+     *                 "password": {"The password field is required."}
+     *             })
+     *         )
+     *     )
+     * )
      */
+
     public function login(Request $request)
     {
-        // Validasi input
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required'
@@ -31,75 +92,97 @@ class AuthController extends Controller
             ], 422);
         }
 
-        // Cek apakah user ada
         $user = User::where('email', $request->email)->first();
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Email atau password salah'
-            ], 401);
+            return ResponseTemplate::send('Login failed', null, 404);
         }
 
-        // Cek apakah user sudah diaktivasi
         if ($user->aktivasi !== 'Activated') {
-            return response()->json([
-                'success' => false,
-                'message' => 'Akun Anda belum diaktivasi oleh admin'
-            ], 403);
+            return ResponseTemplate::send('You are unactivated', null, 403);
         }
-
-        // Hapus semua token lama agar tidak menumpuk
-        $user->tokens()->delete();
-
-        // Generate token baru
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Login berhasil',
-            'data' => [
-                'user' => [
-                    'id' => $user->id,
-                    // 'name' => $user->name,
-                    'email' => $user->email,
-                    'role' => $user->role
-                ],
-                'token' => $token
-            ]
-        ], 200);
+        if ($user && Hash::check($request->password, $user->password)) {
+            $user->tokens()->delete();
+            $data = [
+                "token" => $user->createToken($request['email'])->plainTextToken
+            ];
+            return ResponseTemplate::send('Login success', $data, 200);
+        }
     }
 
     /**
-     * Logout user (hapus token)
+     * @OA\Post(
+     *     path="/logout",
+     *     summary="Logout the authenticated user",
+     *     tags={"Auth"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Logout success",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="code", type="integer", example=200),
+     *             @OA\Property(property="message", type="string", example="Logout success"),
+     *             @OA\Property(property="data", type="object", nullable=true, example=null)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Internal server error",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="code", type="integer", example=500),
+     *             @OA\Property(property="message", type="string", example="An unexpected error occurred"),
+     *             @OA\Property(property="data", type="object", nullable=true, example=null)
+     *         )
+     *     )
+     * )
      */
+
     public function logout(Request $request)
     {
         try {
-            // Hapus token user yang sedang login
             $request->user()->tokens()->delete();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Logout berhasil'
-            ], 200);
+            return ResponseTemplate::send('Logout success', null, 200);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan saat logout',
-                'error' => $e->getMessage()
-            ], 500);
+            return ResponseTemplate::send($e->getMessage(), null, 500);
         }
     }
 
     /**
-     * Mendapatkan user yang sedang login
+     * @OA\Get(
+     *     path="/me",
+     *     summary="Get the authenticated user's profile",
+     *     tags={"Auth"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successfully retrieved profile",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="code", type="integer", example=200),
+     *             @OA\Property(property="message", type="string", example="Success retrieve your profile"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                  @OA\Property(property="id", type="integer", example=1),
+     *                  @OA\Property(property="warga_id", type="string", example="3026300139170900"),
+     *                  @OA\Property(property="email", type="string", format="email", example="fritsch.raheem@nicolas.biz"),
+     *                  @OA\Property(property="no_hp", type="string", example="+1-602-662-8653"),
+     *                  @OA\Property(property="role", type="string", example="Super_Admin"),
+     *                  @OA\Property(property="aktivasi", type="string", example="Activated"),
+     *                  @OA\Property(property="created_at", type="string", format="date-time", example="2025-05-03T20:22:05.000000Z"),
+     *                  @OA\Property(property="updated_at", type="string", format="date-time", example="2025-05-03T20:22:05.000000Z")
+     *             )
+     *         )
+     *     )
+     * )
      */
+
     public function me(Request $request)
     {
-        return response()->json([
-            'success' => true,
-            'message' => 'Data pengguna',
-            'user' => $request->user()
-        ]);
+        return ResponseTemplate::send('Success retrieve your profile', $request->user(), 200);
     }
 }

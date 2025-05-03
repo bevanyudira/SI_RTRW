@@ -38,7 +38,7 @@ class WargaSeeder extends Seeder
                 'alamat' => $faker->address()
             ]);
             User::create([
-                "warga_id" => $warga->id,
+                "warga_id" => $warga->nik,
                 "email" => $faker->email(),
                 "no_hp" => $faker->phoneNumber(),
                 "password" => Hash::make('password'),
