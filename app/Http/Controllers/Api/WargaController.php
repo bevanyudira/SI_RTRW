@@ -303,8 +303,12 @@ class WargaController extends Controller
     {
         $warga = Warga::find($id);
         if ($warga) {
-            $warga->delete();
-            return ResponseTemplate::send('Success delete warga data', null, 200);
+            try {
+                $warga->delete();
+                return ResponseTemplate::send('Success delete warga data', null, 200);
+            } catch (\Throwable $th) {
+                return ResponseTemplate::send($th->getMessage(), null, 400);
+            }
         } else {
             return ResponseTemplate::send('Failed delete warga data', null, 404);
         }

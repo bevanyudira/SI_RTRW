@@ -30,7 +30,7 @@ class RWController extends Controller
      */
     public function store(Request $request)
     {
-        $this-> validate($request, [
+        $this->validate($request, [
             'nama_rw' => 'required|String',
             'nomer_rekening' => 'required|numeric',
         ]);
@@ -40,7 +40,7 @@ class RWController extends Controller
             'nomer_rekening' => $request->input('nomer_rekening')
         ]);
 
-        return redirect() -> route('RW.index') -> with('pesan', "RW telah berhasil dibuat");
+        return redirect()->route('RW.index')->with('pesan', "RW telah berhasil dibuat");
     }
 
     /**
@@ -65,17 +65,17 @@ class RWController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $this-> validate($request, [
+        $this->validate($request, [
             'nama_rw' => 'required|String',
             'nomer_rekening' => 'required|numeric',
         ]);
 
-        RWModel::where('id', $id) -> update([
-            'nama_rw' => $request -> input('nama_rw'),
-            'nomer_rekening' => $request -> input('nomer_rekening')
+        RWModel::where('id', $id)->update([
+            'nama_rw' => $request->input('nama_rw'),
+            'nomer_rekening' => $request->input('nomer_rekening')
         ]);
 
-        return redirect() -> route('RW.index') -> with('pesan', "RW dengan id {$id} telah berhasil diubah");
+        return redirect()->route('RW.index')->with('pesan', "RW dengan id {$id} telah berhasil diubah");
     }
 
     /**
@@ -83,8 +83,8 @@ class RWController extends Controller
      */
     public function destroy(string $id)
     {
-        RWModel::where('id', $id) -> delete();
+        RWModel::where('id', $id)->delete();
 
-        return redirect() -> route('RW.index') -> with('pesan', "RW dengan id {$id} telah berhasil dihapus");
+        return redirect()->route('RW.index')->with('pesan', "RW dengan id {$id} telah berhasil dihapus");
     }
 }
