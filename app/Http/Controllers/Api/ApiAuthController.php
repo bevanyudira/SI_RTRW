@@ -11,8 +11,45 @@ use Illuminate\Validation\ValidationException;
 
 class ApiAuthController extends Controller
 {
+
+
     /**
      * Login user dan mendapatkan token
+     */
+
+    /**
+     * @OA\Post(
+     *     path="/register",
+     *     summary="Register a new user",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name"},
+     *             @OA\Property(
+     *                 property="name",
+     *                 type="string",
+     *                 minLength=5,
+     *                 maxLength=64,
+     *                 example="John Doe"
+     *             ),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="User created successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation Error or Other Error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *         )
+     *     )
+     * )
      */
     public function login(Request $request)
     {
