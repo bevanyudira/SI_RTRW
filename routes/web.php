@@ -42,30 +42,30 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/masuk', [AuthController::class, 'masuk']) -> name('masuk');
-Route::post('/login', [AuthController::class, 'login']) -> name('login');
-Route::post('/logout', [AuthController::class, 'logout']) -> name('logout');
-Route::get('/requestacc', [UsersController::class, 'requestCreate']) -> name('account.requestCreate');
-Route::post('/request', [UsersController::class, 'requestStore']) -> name('account.requestStore');
-Route::get('/forgot-password', [ForgotPasswordController::class, 'forgotPassword']) -> name('forgot-password');
-Route::post('/forgot-password', [ForgotPasswordController::class, 'validation']) -> name('forgot-password.validation');
-Route::get('/reset-password/{id}', [SetPasswordController::class, 'setPassword']) -> name('reset-password');
-Route::patch('/reset-password/{id}', [SetPasswordController::class, 'updatePassword']) -> name('reset-password.update');
+Route::get('/masuk', [AuthController::class, 'masuk'])->name('masuk');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/requestacc', [UsersController::class, 'requestCreate'])->name('account.requestCreate');
+Route::post('/request', [UsersController::class, 'requestStore'])->name('account.requestStore');
+Route::get('/forgot-password', [ForgotPasswordController::class, 'forgotPassword'])->name('forgot-password');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'validation'])->name('forgot-password.validation');
+Route::get('/reset-password/{id}', [SetPasswordController::class, 'setPassword'])->name('reset-password');
+Route::patch('/reset-password/{id}', [SetPasswordController::class, 'updatePassword'])->name('reset-password.update');
 
 // route khusus untuk penjabat rt ['Admin_RT', 'Ketua_RT']
-Route::middleware('role:Admin_RT|Ketua_RT') -> group(function () {
-    Route::get('/kritik-saran/rt', [KritikSaranController::class, 'listKritikRT']) -> name('kritikRT.list');
-    Route::get('/kritik-saran/rt/show/{id}', [KritikSaranController::class, 'showKritikRT']) -> name('kritikRT.show');
-    Route::patch('/kritik-saran/rt/{id}/dibaca', [KritikSaranController::class, 'kritikRTDibaca']) -> name('kritikRT.dibaca');
-    Route::patch('/kritik-saran/rt/{id}/selesai', [KritikSaranController::class, 'kritikRTSelesai']) -> name('kritikRT.selesai');
+Route::middleware('role:Admin_RT|Ketua_RT')->group(function () {
+    Route::get('/kritik-saran/rt', [KritikSaranController::class, 'listKritikRT'])->name('kritikRT.list');
+    Route::get('/kritik-saran/rt/show/{id}', [KritikSaranController::class, 'showKritikRT'])->name('kritikRT.show');
+    Route::patch('/kritik-saran/rt/{id}/dibaca', [KritikSaranController::class, 'kritikRTDibaca'])->name('kritikRT.dibaca');
+    Route::patch('/kritik-saran/rt/{id}/selesai', [KritikSaranController::class, 'kritikRTSelesai'])->name('kritikRT.selesai');
 });
 
 // route khusus untuk penjabat rw ['Admin_RW', 'Ketua_RW']
-Route::middleware('role:Admin_RW|Ketua_RW') -> group(function () {
-    Route::get('/kritik-saran/rw', [KritikSaranController::class, 'listKritikRW']) -> name('kritikRW.list');
-    Route::get('/kritik-saran/rw/show/{id}', [KritikSaranController::class, 'showKritikRW']) -> name('kritikRW.show');
-    Route::patch('/kritik-saran/rw/{id}/dibaca', [KritikSaranController::class, 'kritikRWDibaca']) -> name('kritikRW.dibaca');
-    Route::patch('/kritik-saran/rw/{id}/selesai', [KritikSaranController::class, 'kritikRWSelesai']) -> name('kritikRW.selesai');
+Route::middleware('role:Admin_RW|Ketua_RW')->group(function () {
+    Route::get('/kritik-saran/rw', [KritikSaranController::class, 'listKritikRW'])->name('kritikRW.list');
+    Route::get('/kritik-saran/rw/show/{id}', [KritikSaranController::class, 'showKritikRW'])->name('kritikRW.show');
+    Route::patch('/kritik-saran/rw/{id}/dibaca', [KritikSaranController::class, 'kritikRWDibaca'])->name('kritikRW.dibaca');
+    Route::patch('/kritik-saran/rw/{id}/selesai', [KritikSaranController::class, 'kritikRWSelesai'])->name('kritikRW.selesai');
 });
 
 // route untuk admin [Admin_RT, Admin_RW]
@@ -83,9 +83,9 @@ Route::middleware('role:Admin_RT|Admin_RW')->group(function () {
 });
 
 
-Route::middleware('role:Admin_RT|Super_Admin|Admin_RW') -> group(function () {
+Route::middleware('role:Admin_RT|Super_Admin|Admin_RW')->group(function () {
     // route untuk menambahkan data akun dari warga
-    Route::resource('/account', UsersController::class) -> names([
+    Route::resource('/account', UsersController::class)->names([
         'index' => 'account.index',
         'create' => 'account.create',
         'store' => 'account.store',
@@ -96,7 +96,7 @@ Route::middleware('role:Admin_RT|Super_Admin|Admin_RW') -> group(function () {
     ]);
 
     // route untuk menambahkan data warga
-    Route::resource('/warga', WargaController::class) -> names([
+    Route::resource('/warga', WargaController::class)->names([
         'index' => 'warga.index',
         'create' => 'warga.create',
         'store' => 'warga.store',
@@ -108,15 +108,15 @@ Route::middleware('role:Admin_RT|Super_Admin|Admin_RW') -> group(function () {
 
 
 // route register warga user by adminRt
-Route::middleware('role:Admin_RT') -> group(function () {
+Route::middleware('role:Admin_RT')->group(function () {
     // route untuk pergi ke dashboard adminrt
-    Route::get('/dashboard/adminrt', function(Request $request){
+    Route::get('/dashboard/adminrt', function (Request $request) {
         $data = getDashboardData($request);
         return view('\admin\DashboardAdmin', $data);
     })->name('dashboard.adminrt');
 
     // route untuk menambahkan data iuran rt
-    Route::resource('/iuran-rt', IuranRTController::class) -> names([
+    Route::resource('/iuran-rt', IuranRTController::class)->names([
         'index' => 'iuranRT.index',
         'create' => 'iuranRT.create',
         'store' => 'iuranRT.store',
@@ -127,7 +127,7 @@ Route::middleware('role:Admin_RT') -> group(function () {
     ]);
 
     // route untuk menambahkan data laporan keuangan rt
-    Route::resource('/laporan-keuangan-rt', KeuanganRTController::class) -> names([
+    Route::resource('/laporan-keuangan-rt', KeuanganRTController::class)->names([
         'index' => 'RT.Keuangan.index',
         'create' => 'RT.Keuangan.create',
         'store' => 'RT.Keuangan.store',
@@ -137,39 +137,39 @@ Route::middleware('role:Admin_RT') -> group(function () {
         'show' => 'RT.Keuangan.show',
     ]);
 
-    Route::get('/manajemen-iuran-rt', [ManajemenDetailIuranRTPengguna::class, 'index']) -> name('manajemen-detail-iuran-rt-pengguna.index');
-    Route::patch('/manajemen-iuran-rt/{id}/selesai', [ManajemenDetailIuranRTPengguna::class, 'detailSelesai']) -> name('manajemen-detail-iuran-rt-pengguna.selesai');
-    Route::get('/manajemen-iuran-rt/{id}/gagal', [ManajemenDetailIuranRTPengguna::class, 'keGagal']) -> name('manajemen-detail-iuran-rt-pengguna.keGagal');
-    Route::delete('/manajemen-iuran-rt/{id}', [ManajemenDetailIuranRTPengguna::class, 'detailGagal']) -> name('manajemen-detail-iuran-rt-pengguna.gagal');
-    Route::get('/manajemen-iuran-rt/lihatgambar/{filename}', [ManajemenDetailIuranRTPengguna::class, 'show']) -> name('manajemen-detail-rt-pengguna.show');
+    Route::get('/manajemen-iuran-rt', [ManajemenDetailIuranRTPengguna::class, 'index'])->name('manajemen-detail-iuran-rt-pengguna.index');
+    Route::patch('/manajemen-iuran-rt/{id}/selesai', [ManajemenDetailIuranRTPengguna::class, 'detailSelesai'])->name('manajemen-detail-iuran-rt-pengguna.selesai');
+    Route::get('/manajemen-iuran-rt/{id}/gagal', [ManajemenDetailIuranRTPengguna::class, 'keGagal'])->name('manajemen-detail-iuran-rt-pengguna.keGagal');
+    Route::delete('/manajemen-iuran-rt/{id}', [ManajemenDetailIuranRTPengguna::class, 'detailGagal'])->name('manajemen-detail-iuran-rt-pengguna.gagal');
+    Route::get('/manajemen-iuran-rt/lihatgambar/{filename}', [ManajemenDetailIuranRTPengguna::class, 'show'])->name('manajemen-detail-rt-pengguna.show');
 
-    Route::get('/bayar-iuran-rt', [PembayaranIuranRTController::class, 'index']) -> name('bayar-iuran-rt.index');
-    Route::post('/bayar-iuran-rt', [PembayaranIuranRTController::class, 'bayar']) -> name('bayar-iuran-rt.bayar');
-    Route::get('/bayar-iuran-rt/bayar', [PembayaranIuranRTController::class, 'konfirmasi']) -> name('bayar-iuran-rt.konfirmasi');
-    Route::post('/bayar-iuran-rt/bayar', [PembayaranIuranRTController::class, 'konfirmasiBayar']) -> name('bayar-iuran-rt.konfirmasibayar');
+    Route::get('/bayar-iuran-rt', [PembayaranIuranRTController::class, 'index'])->name('bayar-iuran-rt.index');
+    Route::post('/bayar-iuran-rt', [PembayaranIuranRTController::class, 'bayar'])->name('bayar-iuran-rt.bayar');
+    Route::get('/bayar-iuran-rt/bayar', [PembayaranIuranRTController::class, 'konfirmasi'])->name('bayar-iuran-rt.konfirmasi');
+    Route::post('/bayar-iuran-rt/bayar', [PembayaranIuranRTController::class, 'konfirmasiBayar'])->name('bayar-iuran-rt.konfirmasibayar');
 });
 
 // middleware untuk role warga
-Route::middleware('role:Warga') -> group(function () {
-    Route::get('/dashboard/warga', function(){
+Route::middleware('role:Warga')->group(function () {
+    Route::get('/dashboard/warga', function () {
         return view('/warga/DashboardWarga');
     })->name('dashboard.warga');
 
-    Route::get('bayar-iuran', [PembayaranIuranWargaController::class, 'index']) -> name('bayar-iuran.index');
-    Route::post('bayar-iuran', [PembayaranIuranWargaController::class, 'bayar']) -> name('bayar-iuran.bayar');
-    Route::get('/bayar-iuran/bayar', [PembayaranIuranWargaController::class, 'konfirmasi']) -> name('bayar-iuran.konfirmasi');
-    Route::post('/bayar-iuran/bayar', [PembayaranIuranWargaController::class, 'konfirmasiBayar']) -> name('bayar-iuran.konfirmasibayar');
+    Route::get('bayar-iuran', [PembayaranIuranWargaController::class, 'index'])->name('bayar-iuran.index');
+    Route::post('bayar-iuran', [PembayaranIuranWargaController::class, 'bayar'])->name('bayar-iuran.bayar');
+    Route::get('/bayar-iuran/bayar', [PembayaranIuranWargaController::class, 'konfirmasi'])->name('bayar-iuran.konfirmasi');
+    Route::post('/bayar-iuran/bayar', [PembayaranIuranWargaController::class, 'konfirmasiBayar'])->name('bayar-iuran.konfirmasibayar');
 });
 
 // middleware untuk role admin rw
-Route::middleware('role:Admin_RW') -> group(function () {
-    Route::get('/dashboard/adminrw', function(Request $request){
+Route::middleware('role:Admin_RW')->group(function () {
+    Route::get('/dashboard/adminrw', function (Request $request) {
         $data = getDashboardData($request);
         return view('/admin/DashboardAdmin', $data);
     })->name('dashboard.adminrw');
 
     // route untuk menambahkan rt baru dibawah rw yang dimiliki
-    Route::resource('/rt', RTController::class) -> names([
+    Route::resource('/rt', RTController::class)->names([
         'index' => 'RT.index',
         'create' => 'RT.create',
         'store' => 'RT.store',
@@ -180,7 +180,7 @@ Route::middleware('role:Admin_RW') -> group(function () {
     ]);
 
     // route untuk menambahkan laporan keuangan rw
-    Route::resource('/laporan-keuangan-rw', KeuanganRWController::class) -> names([
+    Route::resource('/laporan-keuangan-rw', KeuanganRWController::class)->names([
         'index' => 'RW.Keuangan.index',
         'create' => 'RW.Keuangan.create',
         'store' => 'RW.Keuangan.store',
@@ -189,9 +189,9 @@ Route::middleware('role:Admin_RW') -> group(function () {
         'destroy' => 'RW.Keuangan.destroy',
         'show' => 'RW.Keuangan.show',
     ]);
-    Route::get('/laporan-keuangan/lihatgambar/{filename}', [KeuanganRWController::class, 'showImage']) -> name('RW.Keuangan.lihatgambar');
+    Route::get('/laporan-keuangan/lihatgambar/{filename}', [KeuanganRWController::class, 'showImage'])->name('RW.Keuangan.lihatgambar');
 
-    Route::resource('/iuran-rw', IuranRWController::class) -> names([
+    Route::resource('/iuran-rw', IuranRWController::class)->names([
         'index' => 'iuranRW.index',
         'create' => 'iuranRW.create',
         'store' => 'iuranRW.store',
@@ -201,35 +201,35 @@ Route::middleware('role:Admin_RW') -> group(function () {
         'show' => 'iuranRW.show',
     ]);
 
-    Route::get('/manajemen-iuran-rw', [ManajemenDetailIuranRWRT::class, 'index']) -> name('manajemen-detail-iuran-rw-rt.index');
-    Route::patch('/manajemen-iuran-rw/{id}/selesai', [ManajemenDetailIuranRWRT::class, 'detailSelesai']) -> name('manajemen-detail-iuran-rw-rt.selesai');
-    Route::get('/manajemen-iuran-rw/{id}/gagal', [ManajemenDetailIuranRWRT::class, 'keGagal']) -> name('manajemen-detail-iuran-rw-rt.keGagal');
-    Route::delete('/manajemen-iuran-rw/{id}', [ManajemenDetailIuranRWRT::class, 'detailGagal']) -> name('manajemen-detail-iuran-rw-rt.gagal');
-    Route::get('/manajemen-iuran-rw/lihatgambar/{filename}', [ManajemenDetailIuranRWRT::class, 'show']) -> name('manajemen-detail-rw-rt.show');
+    Route::get('/manajemen-iuran-rw', [ManajemenDetailIuranRWRT::class, 'index'])->name('manajemen-detail-iuran-rw-rt.index');
+    Route::patch('/manajemen-iuran-rw/{id}/selesai', [ManajemenDetailIuranRWRT::class, 'detailSelesai'])->name('manajemen-detail-iuran-rw-rt.selesai');
+    Route::get('/manajemen-iuran-rw/{id}/gagal', [ManajemenDetailIuranRWRT::class, 'keGagal'])->name('manajemen-detail-iuran-rw-rt.keGagal');
+    Route::delete('/manajemen-iuran-rw/{id}', [ManajemenDetailIuranRWRT::class, 'detailGagal'])->name('manajemen-detail-iuran-rw-rt.gagal');
+    Route::get('/manajemen-iuran-rw/lihatgambar/{filename}', [ManajemenDetailIuranRWRT::class, 'show'])->name('manajemen-detail-rw-rt.show');
 });
 
 // middleware untuk role ketua rt
-Route::middleware('role:Ketua_RT') -> group(function () {
-    Route::get('/dashboard/ketuart', function(){
+Route::middleware('role:Ketua_RT')->group(function () {
+    Route::get('/dashboard/ketuart', function () {
         return view('/rt/DashboardKetuaRT');
     })->name('dashboard.ketuart');
 });
 
 // middleware untuk role ketua rw
-Route::middleware('role:Ketua_RW') -> group(function () {
-    Route::get('/dashboard/ketuarw', function(){
+Route::middleware('role:Ketua_RW')->group(function () {
+    Route::get('/dashboard/ketuarw', function () {
         return view('/rw/DashboardKetuaRW');
     })->name('dashboard.ketuarw');
 });
 
 // middleware untuk role super admin
-Route::middleware('role:Super_Admin') -> group(function () {
-    Route::get('/dashboard/superadmin', function(){
+Route::middleware('role:Super_Admin')->group(function () {
+    Route::get('/dashboard/superadmin', function () {
         return view('SuperAdmin');
     })->name('dashboard.superadmin');
 
     // manajemen rw yang ada
-    Route::resource('/rw', RWController::class) -> names([
+    Route::resource('/rw', RWController::class)->names([
         'index' => 'RW.index',
         'create' => 'RW.create',
         'store' => 'RW.store',
@@ -244,13 +244,13 @@ Route::middleware('role:Super_Admin') -> group(function () {
 
 
 // middleware bagi pengguna yang sudah login, untuk seluruh role
-Route::middleware('auth') -> group(function () {
+Route::middleware('auth')->group(function () {
     // Route::get('/hasil', function () {
     //     return view('hasil');
     // });
 
-    Route::get('/kritik-saran', [KritikSaranController::class, 'index']) -> name('kritik.index');
-    Route::post('/kritik-saran', [KritikSaranController::class, 'store']) -> name('kritik.store');
+    Route::get('/kritik-saran', [KritikSaranController::class, 'index'])->name('kritik.index');
+    Route::post('/kritik-saran', [KritikSaranController::class, 'store'])->name('kritik.store');
 
 
     // route edit dan update by himself
@@ -288,7 +288,8 @@ Route::get('/dashboard/ketuart', function () {
 })->name('dashboard.ketuart');
 
 // Define a function to get the dashboard data
-function getDashboardData(Request $request) {
+function getDashboardData(Request $request)
+{
     $year = $request->input('year', date('Y')); // Default to current year
     $interval = $request->input('interval', '7-days'); // Default interval
 

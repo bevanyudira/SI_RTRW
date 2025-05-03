@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\WargaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,4 +24,5 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('logout', 'logout');
         Route::get('me', 'me');
     });
+    Route::apiResource('warga', WargaController::class);
 });
