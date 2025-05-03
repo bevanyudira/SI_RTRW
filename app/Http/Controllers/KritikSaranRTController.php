@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\KritikSaranRT;
 use App\Models\RTModel;
 use App\Models\RWModel;
-use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth as Auth;
 
 class KritikSaranRTController extends Controller
 {

@@ -112,7 +112,7 @@ Route::middleware('role:Admin_RT') -> group(function () {
     // route untuk pergi ke dashboard adminrt
     Route::get('/dashboard/adminrt', function(Request $request){
         $data = getDashboardData($request);
-        return view('/admin/DashboardAdmin', $data);
+        return view('\admin\DashboardAdmin', $data);
     })->name('dashboard.adminrt');
 
     // route untuk menambahkan data iuran rt

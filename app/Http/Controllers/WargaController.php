@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Warga;
-use Auth;
 use Illuminate\Http\Request;
 
 class WargaController extends Controller
@@ -13,7 +12,7 @@ class WargaController extends Controller
      */
     public function index()
     {
-        // manajemen ini nantinya akan dimiliki oleh admin dari tiap - tiap rt
+        // Manajemen ini nantinya akan dimiliki oleh admin dari tiap-tiap RT
         $warga = Warga::all();
 
         return view('warga.index', compact('warga'));
@@ -32,22 +31,19 @@ class WargaController extends Controller
      */
     public function store(Request $request)
     {
-        $this -> validate($request, [
+        $this->validate($request, [
             'nik' => 'required|numeric|min_digits:15',
-            'nama' => 'required|String|min:5',
-            'alamat' => 'required|String'
+            'nama' => 'required|string|min:5',
+            'alamat' => 'required|string'
         ]);
 
         $warga = new Warga();
-        $warga -> id_warga = $request -> nik;
-        $warga -> nama = $request -> nama;
-        $warga -> alamat = $request -> alamat;
-        $warga -> save();
+        $warga->id_warga = $request->nik;
+        $warga->nama = $request->nama;
+        $warga->alamat = $request->alamat;
+        $warga->save();
 
-        // return redirect() -> route()
-        // return redirect() -> route('masuk');
-        // return redirect('/');
-        return redirect() -> route('warga.index');
+        return redirect()->route('warga.index');
     }
 
     /**
@@ -63,8 +59,7 @@ class WargaController extends Controller
      */
     public function edit(string $id)
     {
-        // $warga = DB::table('warga') -> where('id_warga', $id) -> first();
-        $warga = Warga::where('id_warga', $id) -> first();
+        $warga = Warga::where('id_warga', $id)->first();
         return view('warga.edit', compact('warga'));
     }
 
@@ -73,21 +68,19 @@ class WargaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $this -> validate($request, [
+        $this->validate($request, [
             'nik' => 'required|numeric|min_digits:15',
-            'nama' => 'required|String|min:5',
-            'alamat' => 'required|String'
+            'nama' => 'required|string|min:5',
+            'alamat' => 'required|string'
         ]);
 
-        // $warga = DB::table('warga') -> where('id_warga', $id) -> first();
-        $warga = Warga::where('id_warga', $id) -> first();
-        $warga -> id_warga = $request -> nik;
-        $warga -> nama = $request -> nama;
-        $warga -> alamat = $request -> alamat;
-        $warga -> save();
+        $warga = Warga::where('id_warga', $id)->first();
+        $warga->id_warga = $request->nik;
+        $warga->nama = $request->nama;
+        $warga->alamat = $request->alamat;
+        $warga->save();
 
-        return redirect() -> route('warga.index');
-        // return redirect('/hasil');
+        return redirect()->route('warga.index');
     }
 
     /**
@@ -95,12 +88,9 @@ class WargaController extends Controller
      */
     public function destroy(string $id)
     {
-        // $warga = DB::table('warga') -> where('id_warga', $id) -> first();
-        // $warga = Warga::find($id);
-        $warga = Warga::where('id_warga', $id) -> first();
-        $warga -> delete();
+        $warga = Warga::where('id_warga', $id)->first();
+        $warga->delete();
 
-        // return redirect('/hasil');
-        return redirect() -> route('warga.index');
+        return redirect()->route('warga.index');
     }
 }

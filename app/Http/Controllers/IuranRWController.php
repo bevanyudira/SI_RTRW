@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\IuranRW;
 use App\Models\RTModel;
-use Auth;
-use DB;
+use Illuminate\Support\Facades\Auth; // Impor Auth
+use Illuminate\Support\Facades\DB;   // Impor DB
 use Illuminate\Http\Request;
 
 class IuranRWController extends Controller
@@ -15,12 +15,12 @@ class IuranRWController extends Controller
      */
     public function index()
     {
-        $rt_admin = DB::table('warga') -> where('id_warga', Auth::user() -> id_warga) -> first() -> id_rt;
+        $rt_admin = DB::table('warga')->where('id_warga', Auth::user()->id_warga)->first()->id_rt;
 
-        $rw_admin = RTModel::find($rt_admin) -> first() -> id_rw;
+        $rw_admin = RTModel::find($rt_admin)->first()->id_rw;
 
-        $iuranBulanan = IuranRW::where('id_rw', $rw_admin) -> where('jenis_iuran', 'bulanan') -> get();
-        $iuranTambahan = IuranRW::where('id_rw', $rw_admin) -> where('jenis_iuran', 'tambahan') -> get();
+        $iuranBulanan = IuranRW::where('id_rw', $rw_admin)->where('jenis_iuran', 'bulanan')->get();
+        $iuranTambahan = IuranRW::where('id_rw', $rw_admin)->where('jenis_iuran', 'tambahan')->get();
 
         return view('rw.iuranrw.index', compact('iuranTambahan', 'iuranBulanan'));
     }
@@ -30,7 +30,7 @@ class IuranRWController extends Controller
      */
     public function create()
     {
-        $bulanList = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        $bulanList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         $jenis_iuran = ['bulanan', 'tambahan'];
         return view('rw.iuranrw.create', compact('bulanList', 'jenis_iuran'));
     }
@@ -40,11 +40,11 @@ class IuranRWController extends Controller
      */
     public function store(Request $request)
     {
-        $warga = DB::table('warga') -> where('id_warga', Auth::user() -> id_warga) -> first() -> id_rt;
+        $warga = DB::table('warga')->where('id_warga', Auth::user()->id_warga)->first()->id_rt;
 
-        $rw_admin = RTModel::find($warga) -> first() -> id_rw;
+        $rw_admin = RTModel::find($warga)->first()->id_rw;
 
-        $this -> validate($request, [
+        $this->validate($request, [
             'bulan' => 'required|in:January,February,March,April,May,June,July,August,September,October,November,December',
             'jenis_iuran' => 'required|in:bulanan,tambahan',
             'nama_iuran' => 'required|String',
@@ -52,14 +52,14 @@ class IuranRWController extends Controller
         ]);
 
         IuranRW::create([
-            'id_rw' => $rw_admin ,
-            'nama_iuran' => $request -> input('nama_iuran'),
-            'bulan' => $request -> input('bulan'),
-            'total_iuran' => $request -> input('total_iuran'),
-            'jenis_iuran' => $request -> input('jenis_iuran')
+            'id_rw' => $rw_admin,
+            'nama_iuran' => $request->input('nama_iuran'),
+            'bulan' => $request->input('bulan'),
+            'total_iuran' => $request->input('total_iuran'),
+            'jenis_iuran' => $request->input('jenis_iuran')
         ]);
 
-        return redirect() -> route('iuranRW.index') -> with('pesan', "Data iuran telah berhasil dibuat");
+        return redirect()->route('iuranRW.index')->with('pesan', "Data iuran telah berhasil dibuat");
     }
 
     /**
@@ -76,7 +76,7 @@ class IuranRWController extends Controller
     public function edit(string $id)
     {
         $iuran = IuranRW::find($id);
-        $bulanList = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        $bulanList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         $jenis_iuran = ['bulanan', 'tambahan'];
         return view('rw.iuranrw.edit', compact('iuran', 'bulanList', 'jenis_iuran'));
     }
@@ -86,21 +86,21 @@ class IuranRWController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $this -> validate($request, [
+        $this->validate($request, [
             'bulan' => 'required|in:January,February,March,April,May,June,July,August,September,October,November,December',
             'jenis_iuran' => 'required|in:bulanan,tambahan',
             'nama_iuran' => 'required|String',
             'total_iuran' => 'required|numeric',
         ]);
 
-        IuranRW::findOrFail($id) -> update([
-            'nama_iuran' => $request -> input('nama_iuran'),
-            'bulan' => $request -> input('bulan'),
-            'total_iuran' => $request -> input('total_iuran'),
-            'jenis_iuran' => $request -> input('jenis_iuran')
+        IuranRW::findOrFail($id)->update([
+            'nama_iuran' => $request->input('nama_iuran'),
+            'bulan' => $request->input('bulan'),
+            'total_iuran' => $request->input('total_iuran'),
+            'jenis_iuran' => $request->input('jenis_iuran')
         ]);
 
-        return redirect() -> route('iuranRW.index') -> with('pesan', "Data iuran dengan id {$id} telah berhasil diubah");
+        return redirect()->route('iuranRW.index')->with('pesan', "Data iuran dengan id {$id} telah berhasil diubah");
     }
 
     /**
@@ -109,6 +109,6 @@ class IuranRWController extends Controller
     public function destroy(string $id)
     {
         IuranRW::destroy($id);
-        return redirect() -> route('iuranRW.index') -> with('pesan', "Data iuran dengan id {$id} telah berhasil dihapus");
+        return redirect()->route('iuranRW.index')->with('pesan', "Data iuran dengan id {$id} telah berhasil dihapus");
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\KritikSaranRW;
 use App\Models\RWModel;
-use Auth;
+use Illuminate\Support\Facades\Auth; // Impor Auth
 use Illuminate\Http\Request;
 
 class KritikSaranRWCOntroller extends Controller
@@ -14,8 +14,7 @@ class KritikSaranRWCOntroller extends Controller
      */
     public function index()
     {
-        // $listRW = RWModel::get();
-        $kritikRW = KritikSaranRW::where('id_rw', Auth::user() -> id_rw) -> orderBy('created_at', 'desc') -> get();
+        $kritikRW = KritikSaranRW::where('id_rw', Auth::user()->id_rw)->orderBy('created_at', 'desc')->get();
 
         return view('rw.kritiksaran.index', compact('kritikRW'));
     }
@@ -34,19 +33,19 @@ class KritikSaranRWCOntroller extends Controller
      */
     public function store(Request $request)
     {
-        $this -> validate($request, [
+        $this->validate($request, [
             'id_rw' => 'required',
             'isi' => 'required'
         ]);
 
         KritikSaranRW::create([
-            'id_rw' => $request -> id_rw,
-            'id_pengguna' => Auth::user() -> id,
-            'isi' => $request -> isi,
+            'id_rw' => $request->id_rw,
+            'id_pengguna' => Auth::user()->id,
+            'isi' => $request->isi,
             'status' => 'dilihat'
         ]);
 
-        return redirect() -> route('kritikRW.index') -> with('success', 'Kritik dan saran berhasil dikirim');
+        return redirect()->route('kritikRW.index')->with('success', 'Kritik dan saran berhasil dikirim');
     }
 
     /**
@@ -75,15 +74,15 @@ class KritikSaranRWCOntroller extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $this -> validate($request, [
+        $this->validate($request, [
             'status' => 'required|in:dilihat,diproses,selesai'
         ]);
 
         $kritik = KritikSaranRW::find($id);
-        $kritik -> status = $request -> status;
-        $kritik -> save();
+        $kritik->status = $request->status;
+        $kritik->save();
 
-        return redirect() -> route('kritikRW.index') -> with('success', 'Status kritik dan saran berhasil diubah');
+        return redirect()->route('kritikRW.index')->with('success', 'Status kritik dan saran berhasil diubah');
     }
 
     /**
@@ -93,6 +92,6 @@ class KritikSaranRWCOntroller extends Controller
     {
         KritikSaranRW::destroy($id);
 
-        return redirect() -> route('kritikRW.index') -> with('success', 'Kritik dan saran berhasil dihapus');
+        return redirect()->route('kritikRW.index')->with('success', 'Kritik dan saran berhasil dihapus');
     }
 }

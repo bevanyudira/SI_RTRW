@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\RTModel;
 use App\Models\RWModel;
-use Auth;
-use DB;
+use Illuminate\Support\Facades\Auth; // Impor Auth
+use Illuminate\Support\Facades\DB;   // Impor DB
 use Illuminate\Http\Request;
 
 class RTController extends Controller
@@ -16,11 +16,11 @@ class RTController extends Controller
     public function index()
     {
         // find the id rt of the admin
-        $rt_admin = DB::table('warga') -> where('id_warga', Auth::user() -> id_warga) -> first() -> id_rt;
+        $rt_admin = DB::table('warga')->where('id_warga', Auth::user()->id_warga)->first()->id_rt;
         // find the id rw of the rt from admin
-        $rw_admin = RTModel::find($rt_admin) -> first() -> id_rw;
+        $rw_admin = RTModel::find($rt_admin)->first()->id_rw;
         // get the list of the rt where the rw is the same as the rw_admin
-        $listrt = RTModel::where('id_rw', $rw_admin) -> get();
+        $listrt = RTModel::where('id_rw', $rw_admin)->get();
 
         return view('rt.listrt.index', compact('listrt'));
     }
@@ -30,8 +30,8 @@ class RTController extends Controller
      */
     public function create()
     {
-        $rwListid = RWModel::select('id') -> distinct() -> get();
-        // $rwListnama = RWModel::select('nama_rw') -> distinct() -> get();
+        $rwListid = RWModel::select('id')->distinct()->get();
+        // $rwListnama = RWModel::select('nama_rw')->distinct()->get();
 
         return view('rt.listrt.create', compact('rwListid'));
     }
@@ -42,23 +42,22 @@ class RTController extends Controller
     public function store(Request $request)
     {
         // find the id rt of the admin
-        $rt_admin = DB::table('warga') -> where('id_warga', Auth::user() -> id_warga) -> first() -> id_rt;
+        $rt_admin = DB::table('warga')->where('id_warga', Auth::user()->id_warga)->first()->id_rt;
         // find the id rw of the rt from admin
-        $rw_admin = RTModel::find($rt_admin) -> first() -> id_rw;
+        $rw_admin = RTModel::find($rt_admin)->first()->id_rw;
 
-
-        $this -> validate($request, [
-            'nama_rt' => 'required|String',
+        $this->validate($request, [
+            'nama_rt' => 'required|string',
             'nomor_rekening' => 'required|numeric',
         ]);
 
         RTModel::create([
             'id_rw' => $rw_admin,
-            'nama_rt' => $request -> input('nama_rt'),
-            'nomor_rekening' => $request -> input('nomor_rekening')
+            'nama_rt' => $request->input('nama_rt'),
+            'nomor_rekening' => $request->input('nomor_rekening')
         ]);
 
-        return redirect() -> route('RT.index') -> with('pesan', "RT telah berhasil dibuat");
+        return redirect()->route('RT.index')->with('pesan', "RT telah berhasil dibuat");
     }
 
     /**
@@ -85,23 +84,22 @@ class RTController extends Controller
     public function update(Request $request, string $id)
     {
         // find the id rt of the admin
-        $rt_admin = DB::table('warga') -> where('id_warga', Auth::user() -> id_warga) -> first() -> id_rt;
+        $rt_admin = DB::table('warga')->where('id_warga', Auth::user()->id_warga)->first()->id_rt;
         // find the id rw of the rt from admin
-        $rw_admin = RTModel::find($rt_admin) -> first() -> id_rw;
+        $rw_admin = RTModel::find($rt_admin)->first()->id_rw;
 
-
-        $this -> validate($request, [
-            'nama_rt' => 'required|String',
+        $this->validate($request, [
+            'nama_rt' => 'required|string',
             'nomor_rekening' => 'required|numeric',
         ]);
 
-        RTModel::where($id) -> update([
+        RTModel::where('id', $id)->update([
             'id_rw' => $rw_admin,
-            'nama_rt' => $request -> input('nama_rt'),
-            'nomor_rekening' => $request -> input('nomor_rekening'),
+            'nama_rt' => $request->input('nama_rt'),
+            'nomor_rekening' => $request->input('nomor_rekening'),
         ]);
 
-        return redirect() -> route('RT.index') -> with('pesan', "RT dengan id {$id} telah berhasil diubah");
+        return redirect()->route('RT.index')->with('pesan', "RT dengan id {$id} telah berhasil diubah");
     }
 
     /**
@@ -109,8 +107,8 @@ class RTController extends Controller
      */
     public function destroy(string $id)
     {
-        RTModel::where('id', $id) -> delete();
+        RTModel::where('id', $id)->delete();
 
-        return redirect() -> route('RT.index') -> with('pesan', "RT dengan id {$id} telah berhasil dihapus");
+        return redirect()->route('RT.index')->with('pesan', "RT dengan id {$id} telah berhasil dihapus");
     }
 }

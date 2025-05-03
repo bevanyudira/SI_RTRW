@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\KeuanganRT;
-use Auth;
-use DB;
+use Illuminate\Support\Facades\Auth; // Impor Auth
+use Illuminate\Support\Facades\DB;   // Impor DB
 use Illuminate\Http\Request;
-use Storage;
+use Illuminate\Support\Facades\Storage; // Impor Storage
 
 class KeuanganRTController extends Controller
 {
@@ -16,11 +16,10 @@ class KeuanganRTController extends Controller
     public function index()
     {
         // find the id rt of the admin
-        $rt_admin = DB::table('warga') -> where('id_warga', Auth::user() -> id_warga) -> first() -> id_rt;
-        $listKeu = KeuanganRT::where('id_rt', $rt_admin ) -> get();
+        $rt_admin = DB::table('warga')->where('id_warga', Auth::user()->id_warga)->first()->id_rt;
+        $listKeu = KeuanganRT::where('id_rt', $rt_admin)->get();
 
         return view('rt.menkeu.index', compact('listKeu'));
-
     }
 
     /**
@@ -37,41 +36,38 @@ class KeuanganRTController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request -> all());
         $this->validate($request, [
             'jenis' => 'required|in:D,K',
             'jumlah' => 'required|numeric',
-            // 'path_file' => 'nullable|',
             'path_file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx',
             'keterangan' => 'required|String',
             'tanggal' => 'required|date',
         ]);
 
+        $rt_admin = DB::table('warga')->where('id_warga', Auth::user()->id_warga)->first()->id_rt;
 
-        $rt_admin = DB::table('warga') -> where('id_warga', Auth::user() -> id_warga) -> first() -> id_rt;
-
-        if ($request -> hasFile('path_file')) {
-            $file = $request -> file('path_file');
-            $fileNameWithExt = $file -> getClientOriginalName();
+        if ($request->hasFile('path_file')) {
+            $file = $request->file('path_file');
+            $fileNameWithExt = $file->getClientOriginalName();
             $filename = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-            $extension = $file -> getClientOriginalExtension();
-            $filenameToStore = $filename . '_' . time() . '_'. $extension;
+            $extension = $file->getClientOriginalExtension();
+            $filenameToStore = $filename . '_' . time() . '_' . $extension;
 
-            $file -> storeAs('KeuanganRT', $filenameToStore);
+            $file->storeAs('KeuanganRT', $filenameToStore);
         } else {
             $filenameToStore = 'noimage.jpg';
         }
 
         KeuanganRT::create([
             'id_rt' => $rt_admin,
-            'jenis' => $request -> jenis,
-            'jumlah' => $request -> jumlah,
+            'jenis' => $request->jenis,
+            'jumlah' => $request->jumlah,
             'path_file' => $filenameToStore,
-            'keterangan' => $request -> keterangan,
-            'tanggal' => $request -> tanggal
+            'keterangan' => $request->keterangan,
+            'tanggal' => $request->tanggal
         ]);
 
-        return redirect() -> route('RT.Keuangan.index') -> with('pesan', "Data keuangan telah berhasil dibuat");
+        return redirect()->route('RT.Keuangan.index')->with('pesan', "Data keuangan telah berhasil dibuat");
     }
 
     /**
@@ -80,7 +76,7 @@ class KeuanganRTController extends Controller
     public function show(string $id)
     {
         $keuangan = KeuanganRT::find($id);
-        return Storage::download("KeuanganRT/".$keuangan -> path_file);
+        return Storage::download("KeuanganRT/" . $keuangan->path_file);
     }
 
     /**
@@ -100,7 +96,7 @@ class KeuanganRTController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validate($request, [
-            'jenis' => 'required|in:D, K',
+            'jenis' => 'required|in:D,K',
             'jumlah' => 'required|numeric',
             'path_file' => 'nullable|file',
             'keterangan' => 'required|String',
@@ -109,33 +105,31 @@ class KeuanganRTController extends Controller
 
         $laporan = KeuanganRT::findOrFail($id);
 
-        $rt_admin = DB::table('warga') -> where('id_warga', Auth::user() -> id_warga) -> first() -> id_rt;
+        $rt_admin = DB::table('warga')->where('id_warga', Auth::user()->id_warga)->first()->id_rt;
 
-        if ($request -> hasFile('path_file')) {
-            // if ($laporan -> path_file && Storage::exists('KeuanganRT/'.$laporan -> path_file)) {
-            // }
-            Storage::delete('KeuanganRT/'.$laporan -> path_file);
+        if ($request->hasFile('path_file')) {
+            Storage::delete('KeuanganRT/' . $laporan->path_file);
 
-            $file = $request -> file('path_file');
-            $fileNameWithExt = $file -> getClientOriginalName();
+            $file = $request->file('path_file');
+            $fileNameWithExt = $file->getClientOriginalName();
             $filename = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-            $extension = $file -> getClientOriginalExtension();
-            $filenameToStore = $filename . '_' . time() . '_'. $extension;
+            $extension = $file->getClientOriginalExtension();
+            $filenameToStore = $filename . '_' . time() . '_' . $extension;
 
-            $file -> storeAs('KeuanganRT', $filenameToStore);
+            $file->storeAs('KeuanganRT', $filenameToStore);
 
-            $laporan -> path_file = $filenameToStore;
+            $laporan->path_file = $filenameToStore;
         }
 
-        $laporan -> update([
+        $laporan->update([
             'id_rt' => $rt_admin,
-            'jenis' => $request -> jenis,
-            'jumlah' => $request -> jumlah,
-            'keterangan' => $request -> keterangan,
-            'tanggal' => $request -> tanggal
+            'jenis' => $request->jenis,
+            'jumlah' => $request->jumlah,
+            'keterangan' => $request->keterangan,
+            'tanggal' => $request->tanggal
         ]);
 
-        return redirect() -> route('RT.Keuangan.index') -> with('pesan', "Laporan Keuangan RT dengan id {$id} telah berhasil diperbarui");
+        return redirect()->route('RT.Keuangan.index')->with('pesan', "Laporan Keuangan RT dengan id {$id} telah berhasil diperbarui");
     }
 
     /**

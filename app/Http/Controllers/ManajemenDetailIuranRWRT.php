@@ -8,10 +8,10 @@ use App\Models\IuranRW;
 use App\Models\RTModel;
 use App\Models\User;
 use App\Models\Warga;
-use Auth;
 use Illuminate\Http\Request;
-use Mail;
-use Storage;
+use Illuminate\Support\Facades\Auth as Auth;
+use Illuminate\Support\Facades\Mail as Mail;
+use Illuminate\Support\Facades\Storage as Storage;
 
 class ManajemenDetailIuranRWRT extends Controller
 {

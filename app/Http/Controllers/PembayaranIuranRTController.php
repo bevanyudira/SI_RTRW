@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DetailIuranRWRT;
+use App\Models\Warga;
 use App\Models\IuranRW;
 use App\Models\RTModel;
-use App\Models\Warga;
-use Auth;
 use Illuminate\Http\Request;
+use App\Models\DetailIuranRWRT;
+use Illuminate\Support\Facades\Auth;
 
 class PembayaranIuranRTController extends Controller
 {

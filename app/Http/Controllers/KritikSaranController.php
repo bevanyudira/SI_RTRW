@@ -7,9 +7,9 @@ use App\Models\KritikSaranRW;
 use App\Models\RTModel;
 use App\Models\RWModel;
 use App\Models\Warga;
-use Auth;
-use DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth as Auth;
+use Illuminate\Support\Facades\DB as DB;
 
 class KritikSaranController extends Controller
 {

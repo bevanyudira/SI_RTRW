@@ -2,39 +2,40 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
+     * Nama tabel yang digunakan model ini.
      */
     protected $table = 'pengguna';
+
+    /**
+     * Primary key tabel.
+     */
+    protected $primaryKey = 'id';
+
+    /**
+     * Kolom yang dapat diisi secara massal.
+     */
     protected $fillable = [
         'email',
         'password',
         'no_hp',
         'role',
-        'aktivasi'
+        'aktivasi',
+        'id_warga'
     ];
 
-    public function warga()
-    {
-        return $this->hasOne(Warga::class, 'id_warga', 'id_warga');
-    }
-
     /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
+     * Kolom yang disembunyikan saat serialisasi JSON.
      */
     protected $hidden = [
         'password',
@@ -42,23 +43,41 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
+     * Kolom yang akan otomatis dikonversi ke tipe data tertentu.
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
     ];
 
+    /**
+     * Mutator untuk mengenkripsi password saat diset (gunakan plain string saat set).
+     */
+    protected function password(): Attribute
+    {
+        return Attribute::make(
+            set: fn($value) => bcrypt($value), // Jangan pakai Hash::make manual di luar
+        );
+    }
+
+    /**
+     * Relasi ke tabel Warga.
+     */
+    public function warga()
+    {
+        return $this->hasOne(Warga::class, 'id_warga', 'id_warga');
+    }
+
+    /**
+     * Implementasi autentikasi.
+     */
     public function getAuthIdentifierName()
     {
-        return 'id';
+        return $this->getKeyName();
     }
 
     public function getAuthIdentifier()
     {
-        return $this->attributes[$this->getAuthIdentifierName()];
+        return $this->getKey();
     }
 
     public function getAuthPassword()
@@ -68,7 +87,7 @@ class User extends Authenticatable
 
     public function getRememberToken()
     {
-        return $this->remember_token; // Assuming the remember token field is named 'remember_token'
+        return $this->remember_token;
     }
 
     public function setRememberToken($value)

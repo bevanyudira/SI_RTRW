@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Penjabat_RT;
-use Hash;
+use \Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
 class PenjabatRTController extends Controller
@@ -45,7 +45,7 @@ class PenjabatRTController extends Controller
         $penjabat -> email = $request -> email;
         $penjabat -> no_hp = $request -> no_hp;
         $penjabat -> username = $request -> username;
-        $penjabat -> password =  Hash::make($request -> password);
+        $penjabat -> password = Hash::make($request -> password);
         $penjabat -> role = $request -> input('Role');
         $penjabat -> save();
 

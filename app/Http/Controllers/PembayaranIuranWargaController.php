@@ -6,8 +6,8 @@ use App\Models\DetailIuranRTPengguna;
 use App\Models\IuranRT;
 use App\Models\RTModel;
 use App\Models\Warga;
-use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PembayaranIuranWargaController extends Controller
 {

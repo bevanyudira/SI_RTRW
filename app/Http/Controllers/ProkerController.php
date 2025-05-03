@@ -6,10 +6,10 @@ use App\Models\DetailProkerRT;
 use App\Models\DetailProkerRW;
 use App\Models\Proker;
 use App\Models\RTModel;
-use Auth;
-use DB;
 use Illuminate\Http\Request;
-use Storage;
+use Illuminate\Support\Facades\Auth; // Impor Auth
+use Illuminate\Support\Facades\DB;   // Impor DB
+use Illuminate\Support\Facades\Storage; // Impor Storage
 
 class ProkerController extends Controller
 {
@@ -19,12 +19,11 @@ class ProkerController extends Controller
     public function index()
     {
         // find the id rt of the admin
-        $rt_admin = DB::table('warga') -> where('id_warga', Auth::user() -> id_warga) -> first() -> id_rt;
-        // dd(DB::table('warga') -> where('id_warga', Auth::user() -> id_warga) -> first());
+        $rt_admin = DB::table('warga')->where('id_warga', Auth::user()->id_warga)->first()->id_rt;
         // find the id rw of the rt from admin
-        $rw_admin = RTModel::find($rt_admin) -> first() -> id_rw;
-        $listIdProkerRT = DetailProkerRT::where('id_rt', $rt_admin) -> get();
-        $listIdProkerRW = DetailProkerRW::where('id_rw', $rw_admin) -> get();
+        $rw_admin = RTModel::find($rt_admin)->first()->id_rw;
+        $listIdProkerRT = DetailProkerRT::where('id_rt', $rt_admin)->get();
+        $listIdProkerRW = DetailProkerRW::where('id_rw', $rw_admin)->get();
 
         $prokerRTList = $listIdProkerRT->map(function ($detailProkerRT) {
             return $detailProkerRT->proker; // Mengakses relasi 'proker'
@@ -42,7 +41,6 @@ class ProkerController extends Controller
      */
     public function create()
     {
-        // $statusList = Proker::select('status')->distinct()->get();
         $statusList = ['on_progress', 'selesai'];
         return view('proker.create', compact('statusList'));
     }
@@ -63,17 +61,18 @@ class ProkerController extends Controller
             'status' => 'required|in:on_progress,selesai'
         ]);
 
-        if ($request -> hasFile('gambar')) {
-            $file = $request -> file('gambar');
-            $fileNameWithExt = $file -> getClientOriginalName();
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+            $fileNameWithExt = $file->getClientOriginalName();
             $filename = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-            $extension = $file -> getClientOriginalExtension();
-            $filenameToStore = $filename . '_' . time() . '_'. $extension;
+            $extension = $file->getClientOriginalExtension();
+            $filenameToStore = $filename . '_' . time() . '.' . $extension;
 
-            $file -> storeAs('Proker', $filenameToStore);
+            $file->storeAs('Proker', $filenameToStore);
         } else {
-            return redirect() -> back() -> with('pesan','File is required');
+            return redirect()->back()->with('pesan', 'File is required');
         }
+
         $proker = Proker::create([
             'judul' => $request->input('judul'),
             'isi' => $request->input('isi'),
@@ -84,29 +83,27 @@ class ProkerController extends Controller
             'status' => $request->input('status')
         ]);
 
-        // dd($proker);
-
         // find the id rt of the admin
-        $rt_admin = DB::table('warga') -> where('id_warga', Auth::user() -> id_warga) -> first() -> id_rt;
+        $rt_admin = DB::table('warga')->where('id_warga', Auth::user()->id_warga)->first()->id_rt;
         // find the id rw of the rt from admin
-        $rw_admin = RTModel::find($rt_admin) -> first() -> id_rw;
+        $rw_admin = RTModel::find($rt_admin)->first()->id_rw;
 
-        if (Auth::user() -> role == 'Admin_RT') {
+        if (Auth::user()->role == 'Admin_RT') {
             $pesan = "Data Proker RT telah terbuat";
             DetailProkerRT::create([
-                'id_proker' => $proker -> id,
+                'id_proker' => $proker->id,
                 'id_rt' => $rt_admin
             ]);
         }
-        if (Auth::user() -> role == 'Admin_RW') {
+        if (Auth::user()->role == 'Admin_RW') {
             $pesan = "Data Proker RW telah terbuat";
             DetailProkerRW::create([
-                'id_proker' => $proker -> id,
+                'id_proker' => $proker->id,
                 'id_rw' => $rw_admin
             ]);
         }
 
-        return redirect() -> route('proker.index') -> with('pesan', $pesan);
+        return redirect()->route('proker.index')->with('pesan', $pesan);
     }
 
     /**
@@ -115,7 +112,7 @@ class ProkerController extends Controller
     public function show(string $id)
     {
         $proker = Proker::findOrFail($id);
-        return Storage::get('Proker/'. $proker -> gambar);
+        return Storage::get('Proker/' . $proker->gambar);
     }
 
     /**
@@ -124,7 +121,6 @@ class ProkerController extends Controller
     public function edit(string $id)
     {
         $proker = Proker::findOrFail($id);
-        // $statusList = Proker::select('status')->distinct()->get();
         $statusList = ['on_progress', 'selesai'];
         return view('proker.edit', compact('proker', 'statusList'));
     }
@@ -146,31 +142,29 @@ class ProkerController extends Controller
             'status' => 'required|in:on_progress,selesai'
         ]);
 
-        if ($request -> hasFile('gambar')) {
-            // if ($proker -> gambar && Storage::exists('Proker/' . $proker -> gambar)) {
-            // }
-            Storage::delete('Proker/' . $proker -> gambar);
+        if ($request->hasFile('gambar')) {
+            Storage::delete('Proker/' . $proker->gambar);
 
-            $file = $request -> file('gambar');
-            $fileNameWithExt = $file -> getClientOriginalName();
+            $file = $request->file('gambar');
+            $fileNameWithExt = $file->getClientOriginalName();
             $filename = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-            $extension = $file -> getClientOriginalExtension();
-            $filenameToStore = $filename . '_' . time() . '_'. $extension;
+            $extension = $file->getClientOriginalExtension();
+            $filenameToStore = $filename . '_' . time() . '.' . $extension;
 
             $proker->gambar = $filenameToStore;
-            $file -> storeAs('Proker', $filenameToStore);
+            $file->storeAs('Proker', $filenameToStore);
         }
 
-        $proker -> update([
-            'judul' => $request -> input('judul'),
-            'isi' => $request -> input('isi'),
-            'waktu' => $request -> input('waktu'),
-            'tanggal_pelaksanaan' => $request -> input('tanggal_pelaksanaan'),
-            'lokasi' => $request -> input('lokasi'),
-            'status' => $request -> input('status')
+        $proker->update([
+            'judul' => $request->input('judul'),
+            'isi' => $request->input('isi'),
+            'waktu' => $request->input('waktu'),
+            'tanggal_pelaksanaan' => $request->input('tanggal_pelaksanaan'),
+            'lokasi' => $request->input('lokasi'),
+            'status' => $request->input('status')
         ]);
 
-        return redirect() -> route('proker.index') -> with('pesan', "Program kerja dengan id {$id} telah berhasil di ubah");
+        return redirect()->route('proker.index')->with('pesan', "Program kerja dengan id {$id} telah berhasil di ubah");
     }
 
     /**
@@ -181,13 +175,13 @@ class ProkerController extends Controller
         $detProRT = DetailProkerRT::where('id_proker', $id);
         $detProRW = DetailProkerRW::where('id_proker', $id);
         if ($detProRT) {
-            $detProRT -> delete();
+            $detProRT->delete();
         }
         if ($detProRW) {
-            $detProRW -> delete();
+            $detProRW->delete();
         }
-        Proker::where('id', $id) -> delete();
+        Proker::where('id', $id)->delete();
 
-        return redirect() -> route('proker.index') -> with('pesan', "Program kerja dengna id {$id} telah berhasil dihapus");
+        return redirect()->route('proker.index')->with('pesan', "Program kerja dengan id {$id} telah berhasil dihapus");
     }
 }
