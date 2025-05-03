@@ -9,14 +9,10 @@ use Illuminate\Database\Eloquent\Model;
 class Warga extends Model
 {
     use HasFactory;
-    
-    protected $table = 'warga';
     protected $fillable = [
-        'id_warga',
+        'nik',
         'nama',
         'alamat',
-        'id_rt'
+        'rt_id'
     ];
-
-    protected $primaryKey = 'id_warga';
 }

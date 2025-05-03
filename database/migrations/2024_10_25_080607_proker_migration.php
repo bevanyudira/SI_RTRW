@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('proker', function (Blueprint $table) {
-            $table -> id();
-            $table -> string('judul') -> nullable(false);
-            $table -> text('isi') -> nullable(false);
-            $table -> time('waktu');
-            $table -> date('tanggal_pelaksanaan');
-            $table -> string('lokasi');
-            $table -> string('gambar');
-            $table -> enum('status', ['on_progress', 'selesai']) -> default('on_progress');
-            $table -> timestamps();
+        Schema::create('prokers', function (Blueprint $table) {
+            $table->id();
+            $table->string('judul');
+            $table->text('isi');
+            $table->time('waktu');
+            $table->date('tanggal_pelaksanaan');
+            $table->string('lokasi');
+            $table->string('gambar');
+            $table->enum('status', ['on_progress', 'selesai'])->default('on_progress');
+            $table->timestamps();
         });
     }
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('proker');
+        Schema::dropIfExists('prokers');
     }
 };

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Rt;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,12 +12,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rekening_rt', function (Blueprint $table) {
-            $table -> id();
-            $table -> foreignId('id_rt') -> constrained('rt');
-            $table -> integer('nomor_rekening');
-            $table -> float('saldo');
-            $table -> timestamps();
+        Schema::create('rekening_rts', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(Rt::class);
+            $table->integer('nomor_rekening');
+            $table->float('saldo');
+            $table->timestamps();
         });
     }
 
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rekening_rt');
+        Schema::dropIfExists('rekening_rts');
     }
 };

@@ -5,14 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MutasiRekeningRT extends Model
+class MutasiRekeningRt extends Model
 {
     use HasFactory;
 
-    protected $table = 'mutasi_rekening_rt';
-
     protected $fillable = [
-        'id_rekening_rt',
+        'rekening_rt_id',
         'jenis',
         'jumlah',
         'saldo_awal',

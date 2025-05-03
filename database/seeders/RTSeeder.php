@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\RTModel;
-use App\Models\RWModel;
-use DB;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Rt;
+use App\Models\Rw;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
 
@@ -18,10 +16,10 @@ class RTSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        $listRW = RWModel::pluck('id') -> toArray();
+        $listRW = Rw::pluck('id')->toArray();
 
-        RTModel::create([
-            'id_rw' => $faker -> randomElement($listRW),
+        Rt::create([
+            'rw_id' => $faker->randomElement($listRW),
             'nama_rt' => $faker->unique()->name(),
             'nomor_rekening' => $faker->numerify('################')
         ]);

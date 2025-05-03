@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Proker;
+use App\Models\Rw;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,11 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('detail_proker_rw', function (Blueprint $table) {
-            $table -> id();
-            $table -> foreignId('id_proker') -> constrained('proker');
-            $table -> foreignId('id_rw') -> constrained('rw');
-            $table -> timestamps();
+        Schema::create('detail_proker_rws', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(Proker::class);
+            $table->foreignIdFor(Rw::class);
+            $table->timestamps();
         });
     }
 
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('detail_proker_rw');
+        Schema::dropIfExists('detail_proker_rws');
     }
 };

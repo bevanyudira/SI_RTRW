@@ -5,15 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class KritikSaranRW extends Model
+class KritikSaranRw extends Model
 {
     use HasFactory;
 
-    protected $table = 'kritik_saran_rw';
-
     protected $fillable = [
-        'id_rw',
-        'id_pengguna',
+        'rw_id',
+        'user_id',
         'isi',
         'status'
     ];

@@ -6,14 +6,12 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Penjabat_RT extends Model
+class PenjabatRt extends Model
 {
     use HasFactory;
 
-    protected $table = 'penjabat_rt';
-
     protected $fillable = [
-        'id_pengguna',
-        'id_rt'
+        'user_id',
+        'rt_id'
     ];
 }

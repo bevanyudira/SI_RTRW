@@ -9,8 +9,6 @@ class Proker extends Model
 {
     use HasFactory;
 
-    protected $table = 'proker';
-
     protected $fillable = [
         'judul',
         'isi',
@@ -24,12 +22,12 @@ class Proker extends Model
     // Relasi ke model DetailProkerRT
     public function detailProkerRT()
     {
-        return $this->hasMany(DetailProkerRT::class, 'id_proker'); // id_proker adalah foreign key di detail_proker_rt
+        return $this->hasMany(DetailProkerRt::class); // id_proker adalah foreign key di detail_proker_rt
     }
 
     // Relasi ke model DetailProkerRW
     public function detailProkerRW()
     {
-        return $this->hasMany(DetailProkerRW::class, 'id_proker'); // id_proker adalah foreign key di detail_proker_rw
+        return $this->hasMany(DetailProkerRw::class); // id_proker adalah foreign key di detail_proker_rw
     }
 }

@@ -13,11 +13,6 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
-     * Nama tabel yang digunakan model ini.
-     */
-    protected $table = 'pengguna';
-
-    /**
      * Primary key tabel.
      */
     protected $primaryKey = 'id';
@@ -31,7 +26,7 @@ class User extends Authenticatable
         'no_hp',
         'role',
         'aktivasi',
-        'id_warga'
+        'warga_id'
     ];
 
     /**

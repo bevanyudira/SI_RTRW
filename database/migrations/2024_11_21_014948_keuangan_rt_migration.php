@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Rt;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,16 +12,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('keuangan_rt', function (Blueprint $table) {
-            $table -> id();
-            $table -> foreignId('id_rt') -> constrained('rt');
-            $table -> enum('jenis', ['D', 'K']);
-            // $table -> float('jumlah');
+        Schema::create('keuangan_rts', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(Rt::class);
+            $table->enum('jenis', ['D', 'K']);
             $table->decimal('jumlah', 30, 3);
-            $table -> string('path_file');
-            $table -> string('keterangan');
-            $table -> date('tanggal');
-            $table -> timestamps();
+            $table->string('path_file');
+            $table->string('keterangan');
+            $table->date('tanggal');
+            $table->timestamps();
         });
     }
 
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('keuangan_rt');
+        Schema::dropIfExists('keuangan_rts');
     }
 };

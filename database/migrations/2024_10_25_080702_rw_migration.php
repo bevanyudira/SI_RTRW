@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('rw', function(Blueprint $table) {
-            // $table -> unsignedBigInteger('id_rw') -> primary() -> nullable(false);
-            $table -> id();
-            $table -> string('nama_rw') -> nullable(false);
-            $table -> bigInteger('nomer_rekening');
-            $table -> timestamps();
+        Schema::create('rws', function (Blueprint $table) {
+            $table->id();
+            $table->string('nama_rw');
+            $table->bigInteger('nomer_rekening');
+            $table->timestamps();
         });
     }
 
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rw');
+        Schema::dropIfExists('rws');
     }
 };

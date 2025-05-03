@@ -5,14 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class KeuanganRT extends Model
+class KeuanganRt extends Model
 {
     use HasFactory;
 
-    protected $table = 'keuangan_rt';
-
     protected $fillable = [
-        'id_rt',
+        'rt_id',
         'jenis',
         'jumlah',
         'path_file',
@@ -22,6 +20,6 @@ class KeuanganRT extends Model
 
     public function rt()
     {
-        return $this->belongsTo(RTModel::class, 'id_rt', 'id_rt');
+        return $this->belongsTo(Rt::class);
     }
 }

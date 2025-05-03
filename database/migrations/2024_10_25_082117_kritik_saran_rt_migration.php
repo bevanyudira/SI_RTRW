@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Rt;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,13 +13,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kritik_saran_rt', function (Blueprint $table) {
-            $table -> id();
-            $table -> foreignId('id_rt') -> constrained('rt');
-            $table -> foreignId('id_pengguna') -> constrained('pengguna');
-            $table -> text('isi');
-            $table -> enum('status', ['belum', 'dibaca', 'selesai']);
-            $table -> timestamps();
+        Schema::create('kritik_saran_rts', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(Rt::class);
+            $table->foreignIdFor(User::class);
+            $table->text('isi');
+            $table->enum('status', ['belum', 'dibaca', 'selesai']);
+            $table->timestamps();
         });
     }
 
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kritik_saran_rt');
+        Schema::dropIfExists('kritik_saran_rts');
     }
 };

@@ -5,14 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class IuranRW extends Model
+class IuranRw extends Model
 {
     use HasFactory;
 
-    protected $table = 'iuran_rw';
-
     protected $fillable = [
-        'id_rw',
+        'rw_id',
         'nama_iuran',
         'total_iuran',
         'bulan',

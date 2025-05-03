@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Rt;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,12 +12,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('warga', function (Blueprint $table) {
-            $table -> unsignedBigInteger('id_warga') -> primary() -> nullable(false);
-            $table -> foreignId('id_rt') -> constrained('rt');
-            $table -> string('nama') -> nullable(false);
-            $table -> text('alamat') -> nullable(false);
-            $table -> timestamps();
+        Schema::create('wargas', function (Blueprint $table) {
+            $table->id();
+            $table->string('nik')->unique();
+            $table->foreignIdFor(Rt::class);
+            $table->string('nama');
+            $table->text('alamat');
+            $table->timestamps();
         });
     }
 
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('warga');
+        Schema::dropIfExists('wargas');
     }
 };

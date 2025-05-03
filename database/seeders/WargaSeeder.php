@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\RTModel;
+use App\Models\Rt;
+use App\Models\User;
 use App\Models\Warga;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Support\Facades\Hash;
 
 class WargaSeeder extends Seeder
 {
@@ -27,14 +28,21 @@ class WargaSeeder extends Seeder
         // }
         $faker = Faker::create();
 
-        $listRT = RTModel::pluck('id') -> toArray();
+        $listRT = Rt::pluck('id')->toArray();
 
-        for ($i=0; $i < 3; $i++) { 
-            Warga::create([
-                'id_warga' => $faker -> numerify('################'),
-                'id_rt' => $faker -> randomElement($listRT),
-                'nama' => $faker -> unique() -> name(),
-                'alamat' => $faker -> address()
+        for ($i = 0; $i < 3; $i++) {
+            $warga = Warga::create([
+                'nik' => $faker->numerify('################'),
+                'rt_id' => $faker->randomElement($listRT),
+                'nama' => $faker->unique()->name(),
+                'alamat' => $faker->address()
+            ]);
+            User::create([
+                "warga_id" => $warga->id,
+                "email" => $faker->email(),
+                "no_hp" => $faker->phoneNumber(),
+                "password" => Hash::make('password'),
+                "role" => 'Super_Admin',
             ]);
         }
     }
