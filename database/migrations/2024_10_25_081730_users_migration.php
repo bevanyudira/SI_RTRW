@@ -14,12 +14,12 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('warga_id')->constrained('wargas', 'nik')->onDelete('cascade');
+            $table->foreignIdFor(Warga::class)->unique()->constrained()->onDelete('cascade');
             $table->String('email');
-            $table->String('no_hp');
+            $table->String('phone');
             $table->String('password');
             $table->enum('role', ['Ketua_RT', 'Ketua_RW', 'Admin_RT', 'Admin_RW', 'Super_Admin', 'Warga']);
-            $table->enum('aktivasi', ['Activated', 'Unactivated'])->default('Unactivated');
+            $table->boolean('activated')->default(false);
             $table->timestamps();
         });
     }

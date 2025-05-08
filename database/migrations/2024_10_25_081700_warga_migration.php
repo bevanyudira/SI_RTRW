@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id();
             $table->string('nik')->unique();
             $table->foreignIdFor(Rt::class);
-            $table->string('nama');
-            $table->text('alamat');
+            $table->string('name');
+            $table->text('address');
             $table->timestamps();
         });
     }

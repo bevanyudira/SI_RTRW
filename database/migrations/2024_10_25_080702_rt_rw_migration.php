@@ -12,13 +12,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('iuran_rws', function (Blueprint $table) {
+        Schema::create('rws', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('bank');
+            $table->integer('balance');
+            $table->timestamps();
+        });
+        Schema::create('rts', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Rw::class);
-            $table->string('nama_iuran');
-            $table->decimal('total_iuran', 30, 3);
-            $table->enum('bulan',  ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);
-            $table->enum('jenis_iuran', ['bulanan', 'tambahan']);
+            $table->string('name');
+            $table->string('bank');
+            $table->integer('balance');
             $table->timestamps();
         });
     }
@@ -28,6 +34,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('iuran_rws');
+        Schema::dropIfExists('rws');
+        Schema::dropIfExists('rts');
     }
 };

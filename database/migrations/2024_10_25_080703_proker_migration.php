@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Proker;
+use App\Models\Rt;
+use App\Models\Rw;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,13 +16,15 @@ return new class extends Migration
     {
         Schema::create('prokers', function (Blueprint $table) {
             $table->id();
-            $table->string('judul');
-            $table->text('isi');
-            $table->time('waktu');
-            $table->date('tanggal_pelaksanaan');
-            $table->string('lokasi');
-            $table->string('gambar');
-            $table->enum('status', ['on_progress', 'selesai'])->default('on_progress');
+            $table->string('title');
+            $table->text('description');
+            $table->time('time');
+            $table->date('date');
+            $table->string('location');
+            $table->string('image');
+            $table->foreignIdFor(Rw::class)->nullable();
+            $table->foreignIdFor(Rt::class)->nullable();
+            $table->enum('status', ['progress', 'done'])->default('progress');
             $table->timestamps();
         });
     }

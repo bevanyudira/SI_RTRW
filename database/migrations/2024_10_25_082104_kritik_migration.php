@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Rt;
+use App\Models\Rw;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,14 +14,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('keuangan_rts', function (Blueprint $table) {
+        Schema::create('kritiks', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Rt::class);
-            $table->enum('jenis', ['D', 'K']);
-            $table->decimal('jumlah', 30, 3);
-            $table->string('path_file');
-            $table->string('keterangan');
-            $table->date('tanggal');
+            $table->foreignIdFor(Rt::class)->nullable();
+            $table->foreignIdFor(Rw::class)->nullable();
+            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
+            $table->text('text');
+            $table->enum('status', ['yet', 'read', 'done']);
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('keuangan_rts');
+        Schema::dropIfExists('kritiks');
     }
 };
