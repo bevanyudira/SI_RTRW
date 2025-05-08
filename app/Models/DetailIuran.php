@@ -5,17 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Warga extends Model
+class DetailIuran extends Model
 {
     use HasFactory;
-    protected $guarded = [];
 
-    public function rt()
+    public function iuran()
     {
-        return $this->belongsTo(Rt::class);
+        return $this->belongsTo(Iuran::class);
     }
     public function user()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 }

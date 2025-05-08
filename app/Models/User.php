@@ -14,14 +14,7 @@ class User extends Authenticatable
     /**
      * Kolom yang dapat diisi secara massal.
      */
-    protected $fillable = [
-        'email',
-        'password',
-        'no_hp',
-        'role',
-        'aktivasi',
-        'warga_id'
-    ];
+    protected $guarded = [];
 
     /**
      * Kolom yang disembunyikan saat serialisasi JSON.
@@ -32,45 +25,18 @@ class User extends Authenticatable
     ];
 
     /**
-     * Kolom yang akan otomatis dikonversi ke tipe data tertentu.
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
-    /**
      * Relasi ke tabel Warga.
      */
     public function warga()
     {
-        return $this->hasOne(Warga::class);
+        return $this->belongsTo(Warga::class);
     }
-
-    /**
-     * Implementasi autentikasi.
-     */
-    public function getAuthIdentifierName()
+    public function kritiks()
     {
-        return $this->getKeyName();
+        return $this->hasMany(Kritik::class);
     }
-
-    public function getAuthIdentifier()
+    public function iurans()
     {
-        return $this->getKey();
-    }
-
-    public function getRememberToken()
-    {
-        return $this->remember_token;
-    }
-
-    public function setRememberToken($value)
-    {
-        $this->remember_token = $value;
-    }
-
-    public function getRememberTokenName()
-    {
-        return 'remember_token';
+        return $this->hasMany(Iuran::class);
     }
 }

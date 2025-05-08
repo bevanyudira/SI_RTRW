@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(Rt::class);
             $table->string('name');
             $table->text('address');
+            $table->date('birth');
             $table->timestamps();
         });
     }

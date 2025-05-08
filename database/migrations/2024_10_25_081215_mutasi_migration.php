@@ -23,6 +23,8 @@ return new class extends Migration
             $table->float('before');
             $table->float('after');
             $table->string('notes');
+            $table->string('image')->nullable();
+            $table->date('date');
             $table->timestamps();
         });
     }

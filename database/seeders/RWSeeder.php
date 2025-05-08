@@ -3,21 +3,16 @@
 namespace Database\Seeders;
 
 use App\Models\Rw;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Faker\Factory as Faker;
 
-class RWSeeder extends Seeder
+class RwSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $faker = Faker::create();
-
-        Rw::create([
-            'nama_rw' => $faker->unique()->name(),
-            'nomer_rekening' => $faker->numerify('###############')
-        ]);
+        Rw::factory(1)->create();
     }
 }

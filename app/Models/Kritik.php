@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Proker extends Model
+class Kritik extends Model
 {
     use HasFactory;
     protected $guarded = [];
@@ -23,5 +23,9 @@ class Proker extends Model
             return $this->belongsTo(Rt::class);
         }
         return null;
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

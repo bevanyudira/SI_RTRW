@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Rw extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
-    protected $fillable = [
-        'nama_rw',
-        'nomer_rekening'
-    ];
+    public function rts()
+    {
+        return $this->hasMany(Rt::class);
+    }
 }
