@@ -97,7 +97,7 @@ class AuthController extends Controller
             return ResponseTemplate::send('Login failed', null, 404);
         }
 
-        if ($user->aktivasi !== 'Activated') {
+        if (!$user->activated) {
             return ResponseTemplate::send('You are unactivated', null, 403);
         }
         if ($user && Hash::check($request->password, $user->password)) {

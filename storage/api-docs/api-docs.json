@@ -328,16 +328,592 @@
                 ]
             }
         },
-        "/rw": {
+        "/proker": {
             "get": {
                 "tags": [
-                    "RW"
+                    "Proker"
                 ],
-                "summary": "Get all RW data",
-                "operationId": "fc23eda1e511e5ac0b73f951658f5af3",
+                "summary": "Get all proker data",
+                "description": "Retrieve all program kerja (proker) data. Requires bearer token.",
+                "operationId": "7dbe785a24b137a95c700d37c63afa7c",
                 "responses": {
                     "200": {
-                        "description": "Successfully retrieved all RW data",
+                        "description": "Success retrieve all proker data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success retrieve all proker data"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "Assumenda hic beatae aut ut."
+                                                    },
+                                                    "description": {
+                                                        "type": "string",
+                                                        "example": "Quod molestiae iusto qui."
+                                                    },
+                                                    "time": {
+                                                        "type": "string",
+                                                        "format": "time",
+                                                        "example": "10:27:26"
+                                                    },
+                                                    "date": {
+                                                        "type": "string",
+                                                        "format": "date",
+                                                        "example": "1991-11-23"
+                                                    },
+                                                    "location": {
+                                                        "type": "string",
+                                                        "example": "41506 Durgan Squares Apt. 559"
+                                                    },
+                                                    "image": {
+                                                        "type": "string",
+                                                        "example": "programkerja.jpg"
+                                                    },
+                                                    "rw_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "rt_id": {
+                                                        "type": "integer",
+                                                        "example": null,
+                                                        "nullable": true
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "progress"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2025-05-09T04:16:35.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2025-05-09T04:16:35.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Proker"
+                ],
+                "summary": "Store a new Proker",
+                "description": "Create a new program kerja (proker). Requires bearer token. Either rw_id or rt_id must be provided, but not both.",
+                "operationId": "312bfd8b03ab34a43e2e77f3c34ea34a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "date",
+                                    "location"
+                                ],
+                                "properties": {
+                                    "rw_id": {
+                                        "type": "integer",
+                                        "example": 1,
+                                        "nullable": true
+                                    },
+                                    "rt_id": {
+                                        "type": "integer",
+                                        "example": null,
+                                        "nullable": true
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Program Bersih Desa"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Aksi bersih-bersih lingkungan setiap bulan."
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-06-01"
+                                    },
+                                    "time": {
+                                        "type": "string",
+                                        "format": "time",
+                                        "example": "08:00:00"
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "example": "Balai RW 01, Dusun Maju"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success store proker",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success store proker"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "Program Bersih Desa"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Aksi bersih-bersih lingkungan setiap bulan."
+                                                },
+                                                "date": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2025-06-01"
+                                                },
+                                                "time": {
+                                                    "type": "string",
+                                                    "format": "time",
+                                                    "example": "08:00:00"
+                                                },
+                                                "location": {
+                                                    "type": "string",
+                                                    "example": "Balai RW 01, Dusun Maju"
+                                                },
+                                                "image": {
+                                                    "type": "string",
+                                                    "example": "proker/image123.jpg"
+                                                },
+                                                "rw_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "rt_id": {
+                                                    "type": "integer",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "progress"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-06-01T08:00:00.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-06-01T08:00:00.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input or both/none of RT-RW IDs provided"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/proker/{id}": {
+            "get": {
+                "tags": [
+                    "Proker"
+                ],
+                "summary": "Get Proker by ID",
+                "description": "Retrieve a single Proker record by ID. Requires bearer token.",
+                "operationId": "4ecfd68f02adc7c61ddc814ff1974484",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Proker",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success retrieve proker data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success retrieve proker data"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "Program Bersih Desa"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Aksi bersih-bersih lingkungan setiap bulan."
+                                                },
+                                                "date": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2025-06-01"
+                                                },
+                                                "time": {
+                                                    "type": "string",
+                                                    "format": "time",
+                                                    "example": "08:00:00"
+                                                },
+                                                "location": {
+                                                    "type": "string",
+                                                    "example": "Balai RW 01, Dusun Maju"
+                                                },
+                                                "image": {
+                                                    "type": "string",
+                                                    "example": "proker/image123.jpg"
+                                                },
+                                                "rw_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "rt_id": {
+                                                    "type": "integer",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "progress"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-06-01T08:00:00.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-06-01T08:00:00.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Failed retrieve proker data"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Proker"
+                ],
+                "summary": "Update Proker by ID",
+                "description": "Update an existing Proker. Requires bearer token.",
+                "operationId": "97886f248f9093412ba8ca0df5cea59a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Proker to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "date",
+                                    "location",
+                                    "status"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Program Kebersihan RW"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Pembersihan lingkungan sekitar RW."
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-07-01"
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "example": "Balai RW 03"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "progress",
+                                            "done"
+                                        ],
+                                        "example": "done"
+                                    },
+                                    "rw_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "rt_id": {
+                                        "type": "integer",
+                                        "example": null,
+                                        "nullable": true
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success update proker data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success update proker data"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "title": {
+                                                    "type": "string",
+                                                    "example": "Program Kebersihan RW"
+                                                },
+                                                "description": {
+                                                    "type": "string",
+                                                    "example": "Pembersihan lingkungan sekitar RW."
+                                                },
+                                                "date": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2025-07-01"
+                                                },
+                                                "location": {
+                                                    "type": "string",
+                                                    "example": "Balai RW 03"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "done"
+                                                },
+                                                "image": {
+                                                    "type": "string",
+                                                    "example": "proker/image456.jpg"
+                                                },
+                                                "rw_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "rt_id": {
+                                                    "type": "integer",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error or invalid input"
+                    },
+                    "404": {
+                        "description": "Proker not found"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Proker"
+                ],
+                "summary": "Delete Proker by ID",
+                "description": "Delete a specific Proker by ID. Requires bearer token.",
+                "operationId": "75a4d289b729274463da941773e75488",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Proker to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success delete proker data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success delete proker data"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Proker not found"
+                    },
+                    "400": {
+                        "description": "Delete error or image removal failed silently"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/rt": {
+            "get": {
+                "tags": [
+                    "RT"
+                ],
+                "summary": "Get all RT data",
+                "operationId": "37b56c797e7ece5d60e55a6f83956657",
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved all RT data",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -352,7 +928,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Success retrieve all rw data"
+                                            "example": "Success retrieve all rt data"
                                         },
                                         "data": {
                                             "type": "array",
@@ -362,11 +938,19 @@
                                                         "type": "integer",
                                                         "example": 1
                                                     },
-                                                    "nama_rw": {
+                                                    "rw_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
                                                         "type": "string",
                                                         "example": "Emory Blanda"
                                                     },
-                                                    "nomer_rekening": {
+                                                    "balance": {
+                                                        "type": "integer",
+                                                        "example": 1000000
+                                                    },
+                                                    "bank": {
                                                         "type": "string",
                                                         "example": "887683261999012"
                                                     },
@@ -399,25 +983,30 @@
             },
             "post": {
                 "tags": [
-                    "RW"
+                    "RT"
                 ],
-                "summary": "Store new RW data",
-                "operationId": "fe195addb840f9e95f6ee2ebdc10b3a9",
+                "summary": "Store new RT data",
+                "operationId": "37c0f7e211dc97b417ec53a609ddedbf",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "nama_rw",
-                                    "nomer_rekening"
+                                    "rw_Id",
+                                    "name",
+                                    "bank"
                                 ],
                                 "properties": {
-                                    "nama_rw": {
+                                    "rw_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "name": {
                                         "type": "string",
                                         "example": "Emory Blanda"
                                     },
-                                    "nomer_rekening": {
+                                    "bank": {
                                         "type": "string",
                                         "example": "887683261999012"
                                     }
@@ -429,7 +1018,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Successfully stored RW data",
+                        "description": "Successfully stored RT data",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -444,7 +1033,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Success store rw"
+                                            "example": "Success store rt"
                                         },
                                         "data": {
                                             "properties": {
@@ -452,11 +1041,19 @@
                                                     "type": "integer",
                                                     "example": 1
                                                 },
-                                                "nama_rw": {
+                                                "rw_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
                                                     "type": "string",
                                                     "example": "Emory Blanda"
                                                 },
-                                                "nomer_rekening": {
+                                                "balance": {
+                                                    "type": "integer",
+                                                    "example": 1000000
+                                                },
+                                                "bank": {
                                                     "type": "string",
                                                     "example": "887683261999012"
                                                 },
@@ -500,7 +1097,658 @@
                                         "data": {
                                             "type": "object",
                                             "example": {
-                                                "nama_rw": [
+                                                "name": [
+                                                    "The nama rt field is required."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "SQLSTATE[23000]: Integrity constraint violation..."
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/rt/{id}": {
+            "get": {
+                "tags": [
+                    "RT"
+                ],
+                "summary": "Get RT data by ID",
+                "operationId": "d80d52ab3c4a424fcc1597baee9e64fd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the RT",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved RT data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success retrieve rt data"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "rw_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Emory Blanda"
+                                                },
+                                                "balance": {
+                                                    "type": "integer",
+                                                    "example": 1000000
+                                                },
+                                                "bank": {
+                                                    "type": "string",
+                                                    "example": "887683261999012"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-03T20:22:05.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-03T20:22:05.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "RT data not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Failed retrieve rt data"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "RT"
+                ],
+                "summary": "Update RT data",
+                "operationId": "9f64fd96fc8d6eb78591917aae420957",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the RT to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "bank"
+                                ],
+                                "properties": {
+                                    "rw_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Emory Blanda Updated"
+                                    },
+                                    "bank": {
+                                        "type": "number",
+                                        "example": 887683261999012
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully updated RT data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success update rt data"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "rw_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Emory Blanda Updated"
+                                                },
+                                                "bank": {
+                                                    "type": "string",
+                                                    "example": "887683261999012"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-03T20:22:05.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-04T09:10:00.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Your input is invalid"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "RT not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "rt not found"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Error message"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "RT"
+                ],
+                "summary": "Delete RT data",
+                "operationId": "6070993a4af877f1d53793722a8fde9c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the RT to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully deleted RT data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success delete rt data"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "RT not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Failed delete rt data"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Failed to delete RT due to server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Error message"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/rw": {
+            "get": {
+                "tags": [
+                    "RW"
+                ],
+                "summary": "Get all RW data",
+                "operationId": "fc23eda1e511e5ac0b73f951658f5af3",
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved all RW data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success retrieve all rw data"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Emory Blanda"
+                                                    },
+                                                    "bank": {
+                                                        "type": "string",
+                                                        "example": "887683261999012"
+                                                    },
+                                                    "balance": {
+                                                        "type": "integer",
+                                                        "example": 1000000
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2025-05-03T20:22:05.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2025-05-03T20:22:05.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "RW"
+                ],
+                "summary": "Store new RW data",
+                "operationId": "fe195addb840f9e95f6ee2ebdc10b3a9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "bank"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Emory Blanda"
+                                    },
+                                    "bank": {
+                                        "type": "string",
+                                        "example": "887683261999012"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully stored RW data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success store rw"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Emory Blanda"
+                                                },
+                                                "balance": {
+                                                    "type": "integer",
+                                                    "example": 1000000
+                                                },
+                                                "bank": {
+                                                    "type": "string",
+                                                    "example": "887683261999012"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-03T20:22:05.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-03T20:22:05.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Your input is invalid"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": {
+                                                "name": [
                                                     "The nama rw field is required."
                                                 ]
                                             }
@@ -592,11 +1840,15 @@
                                                     "type": "integer",
                                                     "example": 1
                                                 },
-                                                "nama_rw": {
+                                                "name": {
                                                     "type": "string",
                                                     "example": "Emory Blanda"
                                                 },
-                                                "nomer_rekening": {
+                                                "balance": {
+                                                    "type": "integer",
+                                                    "example": 1000000
+                                                },
+                                                "bank": {
                                                     "type": "string",
                                                     "example": "887683261999012"
                                                 },
@@ -679,15 +1931,15 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "nama_rw",
-                                    "nomer_rekening"
+                                    "name",
+                                    "bank"
                                 ],
                                 "properties": {
-                                    "nama_rw": {
+                                    "name": {
                                         "type": "string",
                                         "example": "Emory Blanda Updated"
                                     },
-                                    "nomer_rekening": {
+                                    "bank": {
                                         "type": "number",
                                         "example": 887683261999012
                                     }
@@ -722,11 +1974,11 @@
                                                     "type": "integer",
                                                     "example": 1
                                                 },
-                                                "nama_rw": {
+                                                "name": {
                                                     "type": "string",
                                                     "example": "Emory Blanda Updated"
                                                 },
-                                                "nomer_rekening": {
+                                                "bank": {
                                                     "type": "string",
                                                     "example": "887683261999012"
                                                 },
@@ -1014,23 +2266,28 @@
                                 "required": [
                                     "nik",
                                     "rt_id",
-                                    "nama",
-                                    "alamat"
+                                    "name",
+                                    "address"
                                 ],
                                 "properties": {
                                     "nik": {
                                         "type": "string",
                                         "example": "3026300139170900"
                                     },
+                                    "birth": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2022-01-01"
+                                    },
                                     "rt_id": {
                                         "type": "integer",
                                         "example": 1
                                     },
-                                    "nama": {
+                                    "name": {
                                         "type": "string",
                                         "example": "Magdalen Gleichner V"
                                     },
-                                    "alamat": {
+                                    "address": {
                                         "type": "string",
                                         "example": "1626 Jast Keys Apt. 210\\nMagnusside, ND 33533"
                                     }
@@ -1163,23 +2420,29 @@
                                 "required": [
                                     "nik",
                                     "rt_id",
-                                    "nama",
-                                    "alamat"
+                                    "name",
+                                    "address",
+                                    "birth"
                                 ],
                                 "properties": {
                                     "nik": {
                                         "type": "string",
                                         "example": "3026300139170900"
                                     },
+                                    "birth": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2022-01-01"
+                                    },
                                     "rt_id": {
                                         "type": "integer",
                                         "example": 1
                                     },
-                                    "nama": {
+                                    "name": {
                                         "type": "string",
                                         "example": "Magdalen Gleichner V"
                                     },
-                                    "alamat": {
+                                    "address": {
                                         "type": "string",
                                         "example": "1626 Jast Keys Apt. 210\\nMagnusside, ND 33533"
                                     }
@@ -1440,11 +2703,16 @@
                         "type": "integer",
                         "example": 1
                     },
-                    "nama": {
+                    "name": {
                         "type": "string",
                         "example": "Magdalen Gleichner V"
                     },
-                    "alamat": {
+                    "birth": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2022-01-01"
+                    },
+                    "address": {
                         "type": "string",
                         "example": "1626 Jast Keys Apt. 210\\nMagnusside, ND 33533"
                     },
@@ -1474,6 +2742,14 @@
         {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "Proker",
+            "description": "Proker"
+        },
+        {
+            "name": "RT",
+            "description": "RT"
         },
         {
             "name": "RW",

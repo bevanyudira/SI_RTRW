@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ProkerController;
+use App\Http\Controllers\Api\RtController;
 use App\Http\Controllers\Api\RwController;
 use App\Http\Controllers\Api\WargaController;
 
@@ -27,4 +29,6 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::apiResource('warga', WargaController::class);
     Route::apiResource('rw', RwController::class);
+    Route::apiResource('rt', RtController::class);
+    Route::apiResource('proker', ProkerController::class);
 });

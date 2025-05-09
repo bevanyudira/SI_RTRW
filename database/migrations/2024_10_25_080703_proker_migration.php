@@ -21,7 +21,7 @@ return new class extends Migration
             $table->time('time');
             $table->date('date');
             $table->string('location');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->foreignIdFor(Rw::class)->nullable();
             $table->foreignIdFor(Rt::class)->nullable();
             $table->enum('status', ['progress', 'done'])->default('progress');

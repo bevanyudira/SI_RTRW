@@ -17,7 +17,7 @@ class RtFactory extends Factory
     public function definition(): array
     {
         return [
-            "name" => "RW " . fake()->numberBetween(1, 9),
+            "name" => "RT " . fake()->numberBetween(1, 9),
             "bank" => fake()->numberBetween(10000000, 99999999),
             "balance" => fake()->numberBetween(1, 100) * 1000000,
         ];

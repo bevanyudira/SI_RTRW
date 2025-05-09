@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
             MutationSeeder::class,
             IuranSeeder::class,
             WargaSeeder::class,
-            UserSeeder::class,
             KritikSeeder::class,
             DefaultAccountSeeder::class,
         ]);

@@ -15,8 +15,9 @@ use Illuminate\Support\Facades\Validator;
  *     @OA\Property(property="id", type="integer", example=1),
  *     @OA\Property(property="nik", type="string", example="3026300139170900"),
  *     @OA\Property(property="rt_id", type="integer", example=1),
- *     @OA\Property(property="nama", type="string", example="Magdalen Gleichner V"),
- *     @OA\Property(property="alamat", type="string", example="1626 Jast Keys Apt. 210\nMagnusside, ND 33533"),
+ *     @OA\Property(property="name", type="string", example="Magdalen Gleichner V"),
+ *     @OA\Property(property="birth", type="date", example="2022-01-01"),
+ *     @OA\Property(property="address", type="string", example="1626 Jast Keys Apt. 210\nMagnusside, ND 33533"),
  *     @OA\Property(property="created_at", type="string", format="date-time", example="2025-05-03T20:22:05.000000Z"),
  *     @OA\Property(property="updated_at", type="string", format="date-time", example="2025-05-03T20:22:05.000000Z")
  * )
@@ -64,8 +65,8 @@ class WargaController extends Controller
         $validator = Validator::make($request->all(), [
             'nik' => 'required|numeric|min_digits:15',
             'rt_id' => 'required|numeric|exists:rts,id',
-            'nama' => 'required|string|min:5',
-            'alamat' => 'required|string'
+            'name' => 'required|string|min:5',
+            'address' => 'required|string'
         ]);
 
         if ($validator->fails()) {
@@ -94,11 +95,12 @@ class WargaController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"nik", "rt_id", "nama", "alamat"},
+     *             required={"nik", "rt_id", "name", "address"},
      *             @OA\Property(property="nik", type="string", example="3026300139170900"),
+     *             @OA\Property(property="birth", type="date", example="2022-01-01"),
      *             @OA\Property(property="rt_id", type="integer", example=1),
-     *             @OA\Property(property="nama", type="string", example="Magdalen Gleichner V"),
-     *             @OA\Property(property="alamat", type="string", example="1626 Jast Keys Apt. 210\nMagnusside, ND 33533")
+     *             @OA\Property(property="name", type="string", example="Magdalen Gleichner V"),
+     *             @OA\Property(property="address", type="string", example="1626 Jast Keys Apt. 210\nMagnusside, ND 33533")
      *         )
      *     ),
      *     @OA\Response(
@@ -167,11 +169,12 @@ class WargaController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"nik", "rt_id", "nama", "alamat"},
+     *             required={"nik", "rt_id", "name", "address","birth"},
      *             @OA\Property(property="nik", type="string", example="3026300139170900"),
+     *             @OA\Property(property="birth", type="date", example="2022-01-01"),
      *             @OA\Property(property="rt_id", type="integer", example=1),
-     *             @OA\Property(property="nama", type="string", example="Magdalen Gleichner V"),
-     *             @OA\Property(property="alamat", type="string", example="1626 Jast Keys Apt. 210\nMagnusside, ND 33533")
+     *             @OA\Property(property="name", type="string", example="Magdalen Gleichner V"),
+     *             @OA\Property(property="address", type="string", example="1626 Jast Keys Apt. 210\nMagnusside, ND 33533")
      *         )
      *     ),
      *     @OA\Response(
@@ -226,8 +229,9 @@ class WargaController extends Controller
         $validator = Validator::make($request->all(), [
             'nik' => 'required|numeric|min_digits:15',
             'rt_id' => 'required|numeric|exists:rts,id',
-            'nama' => 'required|string|min:5',
-            'alamat' => 'required|string'
+            'name' => 'required|string|min:5',
+            'address' => 'required|string',
+            'birth' => 'required|date'
         ]);
 
         if ($validator->fails()) {

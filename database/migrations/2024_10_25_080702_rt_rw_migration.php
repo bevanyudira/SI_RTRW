@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('bank');
-            $table->integer('balance');
+            $table->integer('balance')->default(0);
             $table->timestamps();
         });
         Schema::create('rts', function (Blueprint $table) {
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->foreignIdFor(Rw::class);
             $table->string('name');
             $table->string('bank');
-            $table->integer('balance');
+            $table->integer('balance')->default(0);
             $table->timestamps();
         });
     }
