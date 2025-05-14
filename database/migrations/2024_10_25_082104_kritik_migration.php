@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignIdFor(Rw::class)->nullable();
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
             $table->text('text');
-            $table->enum('status', ['yet', 'read', 'done']);
+            $table->enum('status', ['yet', 'read', 'done'])->default('yet');
             $table->timestamps();
         });
     }
