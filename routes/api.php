@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\KritikController;
 use App\Http\Controllers\Api\ProkerController;
 use App\Http\Controllers\Api\RtController;
 use App\Http\Controllers\Api\RwController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\WargaController;
 
 /*
@@ -26,7 +27,12 @@ Route::controller(AuthController::class)->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::post('logout', 'logout');
+    });
+    Route::controller(UserController::class)->group(function () {
+        Route::post('request', 'createUser');
+        Route::post('activate', 'activateUser');
         Route::get('me', 'me');
+        Route::put('me', 'profileUpdate');
     });
     Route::apiResource('warga', WargaController::class);
     Route::apiResource('rw', RwController::class);

@@ -149,40 +149,4 @@ class AuthController extends Controller
             return ResponseTemplate::send($e->getMessage(), null, 500);
         }
     }
-
-    /**
-     * @OA\Get(
-     *     path="/me",
-     *     summary="Get the authenticated user's profile",
-     *     tags={"Auth"},
-     *     security={{"bearerAuth":{}}},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successfully retrieved profile",
-     *         @OA\JsonContent(
-     *             type="object",
-     *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="code", type="integer", example=200),
-     *             @OA\Property(property="message", type="string", example="Success retrieve your profile"),
-     *             @OA\Property(
-     *                 property="data",
-     *                 type="object",
-     *                  @OA\Property(property="id", type="integer", example=1),
-     *                  @OA\Property(property="warga_id", type="string", example="3026300139170900"),
-     *                  @OA\Property(property="email", type="string", format="email", example="fritsch.raheem@nicolas.biz"),
-     *                  @OA\Property(property="no_hp", type="string", example="+1-602-662-8653"),
-     *                  @OA\Property(property="role", type="string", example="Super_Admin"),
-     *                  @OA\Property(property="aktivasi", type="string", example="Activated"),
-     *                  @OA\Property(property="created_at", type="string", format="date-time", example="2025-05-03T20:22:05.000000Z"),
-     *                  @OA\Property(property="updated_at", type="string", format="date-time", example="2025-05-03T20:22:05.000000Z")
-     *             )
-     *         )
-     *     )
-     * )
-     */
-
-    public function me(Request $request)
-    {
-        return ResponseTemplate::send('Success retrieve your profile', $request->user(), 200);
-    }
 }
