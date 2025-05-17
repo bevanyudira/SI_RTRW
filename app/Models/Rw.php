@@ -18,4 +18,8 @@ class Rw extends Model
     {
         return $this->hasMany(Iuran::class);
     }
+    public function mutations()
+    {
+        return $this->hasMany(Mutation::class);
+    }
 }

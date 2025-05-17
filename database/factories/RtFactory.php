@@ -19,7 +19,7 @@ class RtFactory extends Factory
         return [
             "name" => "RT " . fake()->numberBetween(1, 9),
             "bank" => fake()->numberBetween(10000000, 99999999),
-            "balance" => fake()->numberBetween(1, 100) * 1000000,
+            "balance" => fake()->numberBetween(1, 100) * 10000,
         ];
     }
 }

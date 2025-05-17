@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\IuranController;
 use App\Http\Controllers\Api\KritikController;
+use App\Http\Controllers\Api\MutationController;
 use App\Http\Controllers\Api\ProkerController;
 use App\Http\Controllers\Api\RtController;
 use App\Http\Controllers\Api\RwController;
@@ -41,4 +42,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('proker', ProkerController::class);
     Route::apiResource('kritik', KritikController::class);
     Route::apiResource('iuran', IuranController::class);
+    Route::apiResource('mutasi', MutationController::class);
 });

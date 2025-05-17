@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Helper\ResponseTemplate;
 use App\Http\Controllers\Controller;
 use App\Models\Iuran;
+use App\Models\Rt;
+use App\Models\Rw;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -89,8 +91,6 @@ class IuranController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             required={"name", "month", "value", "variance"},
-     *             @OA\Property(property="rw_id", type="integer", nullable=true, example=1, description="ID of RW (required if rt_id not provided)"),
-     *             @OA\Property(property="rt_id", type="integer", nullable=true, example=1, description="ID of RT (required if rw_id not provided)"),
      *             @OA\Property(property="name", type="string", example="Iuran Bulanan", description="Name of the iuran"),
      *             @OA\Property(property="month", type="string", example="May", enum={
      *                 "January","February","March","April","May","June","July","August","September","October","November","December"
@@ -110,8 +110,6 @@ class IuranController extends Controller
      *                 property="data",
      *                 type="object",
      *                 @OA\Property(property="id", type="integer", example=12),
-     *                 @OA\Property(property="rt_id", type="integer", nullable=true, example=null),
-     *                 @OA\Property(property="rw_id", type="integer", nullable=true, example=1),
      *                 @OA\Property(property="name", type="string", example="Iuran Bulanan"),
      *                 @OA\Property(property="value", type="integer", example=50000),
      *                 @OA\Property(property="month", type="string", example="May"),
@@ -150,8 +148,6 @@ class IuranController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'rw_id' => 'integer|exists:rws,id',
-            'rt_id' => 'integer|exists:rts,id',
             'name' => 'required|string',
             'month' => 'required|string|in:January,February,March,April,May,June,July,August,September,October,November,December',
             'value' => 'required|integer|min:1000|max:1000000',
@@ -162,11 +158,17 @@ class IuranController extends Controller
             return ResponseTemplate::send('Your input is invalid', $validator->messages(), 400);
         }
 
-        if (!$request->rw_id && !$request->rt_id) {
-            return ResponseTemplate::send('Give at least one RT or RW ID', null, 400);
-        }
-        if ($request->rw_id && $request->rt_id) {
-            return ResponseTemplate::send('Give only one RT or RW ID', null, 400);
+        $user = auth()->user();
+        $data = $request->all();
+        $warga = $user->warga;
+        if (str_ends_with($user->role, 'RT')) {
+            $before = Rt::find($warga->rt_id);
+            $data["rt_id"] = $before->id;
+        } elseif (str_ends_with($user->role, 'RW')) {
+            $before = Rw::find($warga->rt->rw->id);
+            $data["rw_id"] = $before->id;
+        } else {
+            return ResponseTemplate::send('You\'re not authorizated', null, 403);
         }
 
         try {

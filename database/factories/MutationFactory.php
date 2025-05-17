@@ -17,7 +17,7 @@ class MutationFactory extends Factory
     public function definition(): array
     {
         return [
-            "variance" => fake()->randomElement(['debit', 'credit']),
+            "variance" => fake()->randomElement(['inflow', 'outflow']),
             "value" => fake()->numberBetween(1, 1000) * 100,
             "before" => fake()->numberBetween(1, 1000) * 100,
             "after" => fake()->numberBetween(1, 1000) * 100,

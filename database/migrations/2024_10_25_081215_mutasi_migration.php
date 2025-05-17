@@ -18,11 +18,11 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Rw::class)->nullable();
             $table->foreignIdFor(Rt::class)->nullable();
-            $table->enum('variance', ['debit', 'credit']);
+            $table->enum('variance', ['inflow', 'outflow']);
             $table->float('value');
             $table->float('before');
             $table->float('after');
-            $table->string('notes');
+            $table->string('notes')->nullable();
             $table->string('image')->nullable();
             $table->date('date');
             $table->timestamps();

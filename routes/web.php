@@ -9,14 +9,10 @@ use App\Http\Controllers\IuranRWController;
 use App\Http\Controllers\KeuanganRTController;
 use App\Http\Controllers\KeuanganRWController;
 use App\Http\Controllers\KritikSaranController;
-use App\Http\Controllers\KritikSaranRTController;
-use App\Http\Controllers\KritikSaranRWCOntroller;
 use App\Http\Controllers\ManajemenDetailIuranRTPengguna;
 use App\Http\Controllers\ManajemenDetailIuranRWRT;
 use App\Http\Controllers\PembayaranIuranRTController;
 use App\Http\Controllers\PembayaranIuranWargaController;
-use App\Http\Controllers\PenjabatRTController;
-use App\Http\Controllers\PenjabatRWController;
 use App\Http\Controllers\ProkerController;
 use App\Http\Controllers\RTController;
 use App\Http\Controllers\RWController;
@@ -26,19 +22,7 @@ use App\Http\Controllers\WargaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
 Route::get('/', function () {
-    // dd(Auth::user());
     return view('welcome');
 });
 
@@ -245,39 +229,13 @@ Route::middleware('role:Super_Admin')->group(function () {
 
 // middleware bagi pengguna yang sudah login, untuk seluruh role
 Route::middleware('auth')->group(function () {
-    // Route::get('/hasil', function () {
-    //     return view('hasil');
-    // });
-
     Route::get('/kritik-saran', [KritikSaranController::class, 'index'])->name('kritik.index');
     Route::post('/kritik-saran', [KritikSaranController::class, 'store'])->name('kritik.store');
-
-
-    // route edit dan update by himself
-    // Route::get('/edit/{id}', [UsersController::class, 'edit']) -> name('edit');
-    // Route::post('/update', [UsersController::class, 'update']) -> name('update');
-
 });
 
 Route::get('/index', function () {
     return view('index');
 });
-
-// Route::get('/dashboard/warga', function () {
-//     return view('/warga/DashboardWarga');
-// })->name('dashboard.warga');
-
-// Route::get('/dashboard/superadmin', function () {
-//     return view('/warga/DashboardWarga');
-// })->name('dashboard.superadmin');
-
-// Route::get('/dashboard/adminrw', function () {
-//     return view('/rw/DashboardAdminRW');
-// })->name('dashboard.adminrw');
-
-// Route::get('/dashboard/adminrt', function () {
-//     return view('/rt/DashboardAdminRT');
-// })->name('dashboard.adminrt');
 
 Route::get('/dashboard/ketuarw', function () {
     return view('/rw/DashboardKetuaRW');
@@ -360,22 +318,15 @@ function getDashboardData(Request $request)
     return compact('barchart_data', 'linechart_data', 'piechart_data', 'totalPemasukan', 'totalPengeluaran', 'year', 'interval');
 }
 
-// Admin Dashboard Route
 Route::get('/dashboard/admin', function (Request $request) {
     $data = getDashboardData($request);
     return view('admin.DashboardAdmin', $data);
 })->name('admin-dashboard');
 
-// Warga Dashboard Route
 Route::get('/dashboard/warga', function (Request $request) {
     $data = getDashboardData($request);
     return view('warga.DashboardWarga', $data);
 })->name('dashboard.warga');
-
-
-// Route::get('/dashboard/admin', [ChartController::class, 'barChart']);
-
-// Route::get('/dashboard/admin', [ChartController::class, 'barChart'])->name('admin-dashboard');
 
 Route::get('/data-warga/admin', function () {
     return view('/admin/DataWarga');
