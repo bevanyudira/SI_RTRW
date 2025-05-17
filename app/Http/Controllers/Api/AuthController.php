@@ -103,7 +103,8 @@ class AuthController extends Controller
         if ($user && Hash::check($request->password, $user->password)) {
             $user->tokens()->delete();
             $data = [
-                "token" => $user->createToken($request['email'])->plainTextToken
+                "token" => $user->createToken($request['email'])->plainTextToken,
+                "user" => $user
             ];
             return ResponseTemplate::send('Login success', $data, 200);
         }

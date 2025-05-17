@@ -39,4 +39,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Iuran::class);
     }
+    public function pays()
+    {
+        return $this->hasMany(DetailIuran::class);
+    }
+    public function wallets()
+    {
+        return $this->hasMany(Wallet::class);
+    }
 }

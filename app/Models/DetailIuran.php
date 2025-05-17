@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class DetailIuran extends Model
 {
     use HasFactory;
-
+    protected $guarded = [];
     public function iuran()
     {
         return $this->belongsTo(Iuran::class);

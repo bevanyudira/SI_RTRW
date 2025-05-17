@@ -248,16 +248,16 @@
                 ]
             }
         },
-        "/me": {
+        "/iuran": {
             "get": {
                 "tags": [
-                    "Auth"
+                    "Iuran"
                 ],
-                "summary": "Get the authenticated user's profile",
-                "operationId": "bc2032a379aa97707ccc61511897c120",
+                "summary": "Get RT and RW Iuran Data for the authenticated user",
+                "operationId": "f4db09fdc69675591b3df064efc2785c",
                 "responses": {
                     "200": {
-                        "description": "Successfully retrieved profile",
+                        "description": "Success retrieve all iuran data",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -272,7 +272,348 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Success retrieve your profile"
+                                            "example": "Success retrieve all iuran data"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "rt": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 6
+                                                            },
+                                                            "rt_id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "rw_id": {
+                                                                "type": "integer",
+                                                                "example": null,
+                                                                "nullable": true
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "fsfs"
+                                                            },
+                                                            "value": {
+                                                                "type": "integer",
+                                                                "example": 200000
+                                                            },
+                                                            "month": {
+                                                                "type": "string",
+                                                                "example": "February"
+                                                            },
+                                                            "variance": {
+                                                                "type": "string",
+                                                                "example": "monthly"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2025-05-17T07:12:53.000000Z"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2025-05-17T07:50:11.000000Z"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "rw": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "rt_id": {
+                                                                "type": "integer",
+                                                                "example": null,
+                                                                "nullable": true
+                                                            },
+                                                            "rw_id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Labore dolorem."
+                                                            },
+                                                            "value": {
+                                                                "type": "integer",
+                                                                "example": 40000
+                                                            },
+                                                            "month": {
+                                                                "type": "string",
+                                                                "example": "August"
+                                                            },
+                                                            "variance": {
+                                                                "type": "string",
+                                                                "example": "additional"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2025-05-17T07:12:52.000000Z"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2025-05-17T07:12:52.000000Z"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Iuran"
+                ],
+                "summary": "Store new Iuran (RT or RW)",
+                "operationId": "cef87ea6d73355bf4d0538be0edaef94",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "month",
+                                    "value",
+                                    "variance"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Name of the iuran",
+                                        "type": "string",
+                                        "example": "Iuran Bulanan"
+                                    },
+                                    "month": {
+                                        "type": "string",
+                                        "enum": [
+                                            "January",
+                                            "February",
+                                            "March",
+                                            "April",
+                                            "May",
+                                            "June",
+                                            "July",
+                                            "August",
+                                            "September",
+                                            "October",
+                                            "November",
+                                            "December"
+                                        ],
+                                        "example": "May"
+                                    },
+                                    "value": {
+                                        "type": "integer",
+                                        "maximum": 1000000,
+                                        "minimum": 1000,
+                                        "example": 50000
+                                    },
+                                    "variance": {
+                                        "type": "string",
+                                        "enum": [
+                                            "monthly",
+                                            "additional"
+                                        ],
+                                        "example": "monthly"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success store iuran",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success store iuran"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 12
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Iuran Bulanan"
+                                                },
+                                                "value": {
+                                                    "type": "integer",
+                                                    "example": 50000
+                                                },
+                                                "month": {
+                                                    "type": "string",
+                                                    "example": "May"
+                                                },
+                                                "variance": {
+                                                    "type": "string",
+                                                    "example": "monthly"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-17T08:00:00.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-17T08:00:00.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request (validation failed or business logic error)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Your input is invalid"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Error message from server"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/iuran/{id}": {
+            "get": {
+                "tags": [
+                    "Iuran"
+                ],
+                "summary": "Get iuran detail by ID",
+                "operationId": "c4b57f0f1469a7bd23ab5deb60794c32",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the iuran",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success retrieve iuran data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success retrieve iuran data"
                                         },
                                         "data": {
                                             "properties": {
@@ -280,39 +621,2325 @@
                                                     "type": "integer",
                                                     "example": 1
                                                 },
-                                                "warga_id": {
-                                                    "type": "string",
-                                                    "example": "3026300139170900"
+                                                "rt_id": {
+                                                    "type": "integer",
+                                                    "example": null,
+                                                    "nullable": true
                                                 },
-                                                "email": {
-                                                    "type": "string",
-                                                    "format": "email",
-                                                    "example": "fritsch.raheem@nicolas.biz"
+                                                "rw_id": {
+                                                    "type": "integer",
+                                                    "example": 1,
+                                                    "nullable": true
                                                 },
-                                                "no_hp": {
+                                                "name": {
                                                     "type": "string",
-                                                    "example": "+1-602-662-8653"
+                                                    "example": "Iuran Bulanan"
                                                 },
-                                                "role": {
+                                                "month": {
                                                     "type": "string",
-                                                    "example": "Super_Admin"
+                                                    "example": "May"
                                                 },
-                                                "aktivasi": {
+                                                "value": {
+                                                    "type": "integer",
+                                                    "example": 50000
+                                                },
+                                                "variance": {
                                                     "type": "string",
-                                                    "example": "Activated"
+                                                    "example": "monthly"
                                                 },
                                                 "created_at": {
                                                     "type": "string",
                                                     "format": "date-time",
-                                                    "example": "2025-05-03T20:22:05.000000Z"
+                                                    "example": "2025-05-17T08:00:00.000000Z"
                                                 },
                                                 "updated_at": {
                                                     "type": "string",
                                                     "format": "date-time",
-                                                    "example": "2025-05-03T20:22:05.000000Z"
+                                                    "example": "2025-05-17T08:00:00.000000Z"
                                                 }
                                             },
                                             "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Iuran not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Failed retrieve iuran data"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Iuran"
+                ],
+                "summary": "Update iuran data by ID",
+                "operationId": "f4437dd81f6ce5d804a787aa67a2d27a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the iuran to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "month",
+                                    "value",
+                                    "variance"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Iuran Keamanan"
+                                    },
+                                    "month": {
+                                        "type": "string",
+                                        "example": "May"
+                                    },
+                                    "value": {
+                                        "type": "integer",
+                                        "example": 50000
+                                    },
+                                    "variance": {
+                                        "type": "string",
+                                        "example": "monthly"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success update iuran data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success update iuran data"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Iuran Keamanan"
+                                                },
+                                                "month": {
+                                                    "type": "string",
+                                                    "example": "May"
+                                                },
+                                                "value": {
+                                                    "type": "integer",
+                                                    "example": 50000
+                                                },
+                                                "variance": {
+                                                    "type": "string",
+                                                    "example": "monthly"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Your input is invalid"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Authorization failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 403
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "You're not authorizated"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Iuran not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Iuran not found"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Server error"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Iuran"
+                ],
+                "summary": "Delete iuran by ID",
+                "operationId": "6b8eb66e53127fec902eda65a6cb0269",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the iuran to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success delete iuran data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success delete iuran data"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized access",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 403
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "You're not authorizated"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Iuran not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Failed delete iuran data"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Delete failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Delete failed message"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/kritik": {
+            "get": {
+                "tags": [
+                    "Kritik"
+                ],
+                "summary": "Get all kritik data",
+                "description": "Retrieve all kritik data from the database",
+                "operationId": "getAllKritik",
+                "responses": {
+                    "200": {
+                        "description": "Success retrieve all kritik data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success retrieve all kritik data"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "rt_id": {
+                                                        "type": "integer",
+                                                        "example": 4,
+                                                        "nullable": true
+                                                    },
+                                                    "rw_id": {
+                                                        "type": "integer",
+                                                        "example": null,
+                                                        "nullable": true
+                                                    },
+                                                    "user_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "text": {
+                                                        "type": "string",
+                                                        "example": "Halo ini kritik"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "yet"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2025-05-14T09:48:52.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2025-05-14T09:48:52.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Kritik"
+                ],
+                "summary": "Store new kritik",
+                "description": "Create a new kritik record with either RT or RW ID",
+                "operationId": "storeKritik",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "rt_id": {
+                                        "type": "integer",
+                                        "example": 4,
+                                        "nullable": true
+                                    },
+                                    "rw_id": {
+                                        "type": "integer",
+                                        "example": null,
+                                        "nullable": true
+                                    },
+                                    "text": {
+                                        "type": "string",
+                                        "example": "Ini adalah kritik"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success store kritik",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success store kritik"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "rt_id": {
+                                                    "type": "integer",
+                                                    "example": 4,
+                                                    "nullable": true
+                                                },
+                                                "rw_id": {
+                                                    "type": "integer",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "text": {
+                                                    "type": "string",
+                                                    "example": "Ini adalah kritik"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "yet"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-14T09:48:52.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-14T09:48:52.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation or logic error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Your input is invalid"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/kritik/{id}": {
+            "get": {
+                "tags": [
+                    "Kritik"
+                ],
+                "summary": "Get a specific kritik by ID",
+                "description": "Retrieve a single kritik entry by its ID",
+                "operationId": "getKritikById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the kritik to retrieve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 2
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success retrieve kritik data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success retrieve kritik data"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "rt_id": {
+                                                    "type": "integer",
+                                                    "example": 4,
+                                                    "nullable": true
+                                                },
+                                                "rw_id": {
+                                                    "type": "integer",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "text": {
+                                                    "type": "string",
+                                                    "example": "Halo ini kritik"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "yet"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-14T09:48:52.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-14T09:48:52.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Kritik not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Failed retrieve kritik data"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Kritik"
+                ],
+                "summary": "Update kritik status",
+                "description": "Update the status of a specific kritik entry",
+                "operationId": "updateKritik",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the kritik to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 2
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "status"
+                                ],
+                                "properties": {
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "yet",
+                                            "done",
+                                            "read"
+                                        ],
+                                        "example": "done"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success update kritik data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success update kritik data"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "rt_id": {
+                                                    "type": "integer",
+                                                    "example": 4,
+                                                    "nullable": true
+                                                },
+                                                "rw_id": {
+                                                    "type": "integer",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "text": {
+                                                    "type": "string",
+                                                    "example": "Halo ini kritik"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "done"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-14T09:48:52.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-14T10:00:00.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Your input is invalid"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Kritik not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "kritik not found"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Kritik"
+                ],
+                "summary": "Delete kritik",
+                "description": "Delete a kritik by ID",
+                "operationId": "deleteKritik",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the kritik to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 2
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success delete kritik data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success delete kritik data"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Failed to delete kritik",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Some error message"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Kritik not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Failed delete kritik data"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/mutasi": {
+            "get": {
+                "tags": [
+                    "Mutasi"
+                ],
+                "summary": "Get mutation data for RT and RW",
+                "description": "Retrieve all mutation data related to the authenticated user's RT and its associated RW.",
+                "operationId": "getMutations",
+                "responses": {
+                    "200": {
+                        "description": "Success retrieve all mutation data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success retrieve all mutation data"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "rt": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 6
+                                                            },
+                                                            "rw_id": {
+                                                                "type": "integer",
+                                                                "example": null,
+                                                                "nullable": true
+                                                            },
+                                                            "rt_id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "variance": {
+                                                                "type": "string",
+                                                                "example": "outflow"
+                                                            },
+                                                            "value": {
+                                                                "type": "integer",
+                                                                "example": 89700
+                                                            },
+                                                            "before": {
+                                                                "type": "integer",
+                                                                "example": 70900
+                                                            },
+                                                            "after": {
+                                                                "type": "integer",
+                                                                "example": 10700
+                                                            },
+                                                            "notes": {
+                                                                "type": "string",
+                                                                "example": "Vitae sed est repellendus repellat."
+                                                            },
+                                                            "image": {
+                                                                "type": "string",
+                                                                "example": "voluptas"
+                                                            },
+                                                            "date": {
+                                                                "type": "string",
+                                                                "format": "date",
+                                                                "example": "1998-05-27"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2025-05-17T11:08:12.000000Z"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2025-05-17T11:08:12.000000Z"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "rw": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "rw_id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "rt_id": {
+                                                                "type": "integer",
+                                                                "example": null,
+                                                                "nullable": true
+                                                            },
+                                                            "variance": {
+                                                                "type": "string",
+                                                                "example": "inflow"
+                                                            },
+                                                            "value": {
+                                                                "type": "integer",
+                                                                "example": 41600
+                                                            },
+                                                            "before": {
+                                                                "type": "integer",
+                                                                "example": 19000
+                                                            },
+                                                            "after": {
+                                                                "type": "integer",
+                                                                "example": 10200
+                                                            },
+                                                            "notes": {
+                                                                "type": "string",
+                                                                "example": "Odit qui non qui."
+                                                            },
+                                                            "image": {
+                                                                "type": "string",
+                                                                "example": "provident"
+                                                            },
+                                                            "date": {
+                                                                "type": "string",
+                                                                "format": "date",
+                                                                "example": "2002-08-22"
+                                                            },
+                                                            "created_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2025-05-17T11:08:12.000000Z"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "example": "2025-05-17T11:08:12.000000Z"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Mutasi"
+                ],
+                "summary": "Create a new mutation (inflow/outflow)",
+                "description": "Store a new mutation related to the authenticated user's RT or RW.",
+                "operationId": "storeMutation",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "value",
+                                    "variance",
+                                    "date"
+                                ],
+                                "properties": {
+                                    "value": {
+                                        "type": "integer",
+                                        "format": "int32",
+                                        "maximum": 1000000,
+                                        "minimum": 1000,
+                                        "example": 50000
+                                    },
+                                    "variance": {
+                                        "type": "string",
+                                        "enum": [
+                                            "inflow",
+                                            "outflow"
+                                        ],
+                                        "example": "inflow"
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-05-17"
+                                    },
+                                    "notes": {
+                                        "type": "string",
+                                        "example": "Donation from RW residents"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success store mutation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success store mutation"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "rw_id": {
+                                                    "type": "integer",
+                                                    "example": 1,
+                                                    "nullable": true
+                                                },
+                                                "rt_id": {
+                                                    "type": "integer",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "variance": {
+                                                    "type": "string",
+                                                    "example": "inflow"
+                                                },
+                                                "value": {
+                                                    "type": "integer",
+                                                    "example": 50000
+                                                },
+                                                "before": {
+                                                    "type": "integer",
+                                                    "example": 250000
+                                                },
+                                                "after": {
+                                                    "type": "integer",
+                                                    "example": 300000
+                                                },
+                                                "notes": {
+                                                    "type": "string",
+                                                    "example": "Donation from RW residents"
+                                                },
+                                                "image": {
+                                                    "type": "string",
+                                                    "example": "bukti/example.png"
+                                                },
+                                                "date": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2025-05-17"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-17T13:00:00Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-17T13:00:00Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Your input is invalid"
+                    },
+                    "403": {
+                        "description": "You're not authorizated"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/mutasi/{id}": {
+            "get": {
+                "tags": [
+                    "Mutasi"
+                ],
+                "summary": "Get mutation detail by ID",
+                "description": "Retrieve specific mutation data by ID for authenticated users.",
+                "operationId": "getMutationById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Mutation ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "12"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success retrieve mutation data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success retrieve mutation data"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 12
+                                                },
+                                                "rw_id": {
+                                                    "type": "integer",
+                                                    "example": 1,
+                                                    "nullable": true
+                                                },
+                                                "rt_id": {
+                                                    "type": "integer",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "variance": {
+                                                    "type": "string",
+                                                    "example": "inflow"
+                                                },
+                                                "value": {
+                                                    "type": "integer",
+                                                    "example": 25000
+                                                },
+                                                "before": {
+                                                    "type": "integer",
+                                                    "example": 150000
+                                                },
+                                                "after": {
+                                                    "type": "integer",
+                                                    "example": 175000
+                                                },
+                                                "notes": {
+                                                    "type": "string",
+                                                    "example": "Monthly donation"
+                                                },
+                                                "image": {
+                                                    "type": "string",
+                                                    "example": "bukti/donation.png"
+                                                },
+                                                "date": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2025-05-17"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-17T13:00:00Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-17T13:00:00Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Failed retrieve mutation data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Failed retrieve mutation data"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Mutasi"
+                ],
+                "summary": "Update mutation by ID",
+                "description": "Update a mutation data. Only authorized users (RT/RW/Super Admin) can update mutations.",
+                "operationId": "updateMutation",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Mutation ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "12"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "value",
+                                    "variance",
+                                    "date"
+                                ],
+                                "properties": {
+                                    "value": {
+                                        "description": "Nominal mutation value",
+                                        "type": "integer",
+                                        "example": 25000
+                                    },
+                                    "variance": {
+                                        "type": "string",
+                                        "enum": [
+                                            "inflow",
+                                            "outflow"
+                                        ],
+                                        "example": "outflow"
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-05-17"
+                                    },
+                                    "notes": {
+                                        "type": "string",
+                                        "example": "Updated description or notes"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success update mutation data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success update mutation data"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 12
+                                                },
+                                                "variance": {
+                                                    "type": "string",
+                                                    "example": "outflow"
+                                                },
+                                                "value": {
+                                                    "type": "integer",
+                                                    "example": 25000
+                                                },
+                                                "date": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "2025-05-17"
+                                                },
+                                                "notes": {
+                                                    "type": "string",
+                                                    "example": "Updated description or notes"
+                                                },
+                                                "rw_id": {
+                                                    "type": "integer",
+                                                    "example": 1,
+                                                    "nullable": true
+                                                },
+                                                "rt_id": {
+                                                    "type": "integer",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "before": {
+                                                    "type": "integer",
+                                                    "example": 150000
+                                                },
+                                                "after": {
+                                                    "type": "integer",
+                                                    "example": 125000
+                                                },
+                                                "image": {
+                                                    "type": "string",
+                                                    "example": "bukti/outflow.jpg"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-17T13:00:00Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-17T14:00:00Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Your input is invalid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Your input is invalid"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": {
+                                                "value": [
+                                                    "The value must be at least 1000."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "You're not authorizated"
+                    },
+                    "404": {
+                        "description": "Mutation not found"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Mutasi"
+                ],
+                "summary": "Delete mutation by ID",
+                "description": "Delete a mutation record. Only authorized users (RT/RW/Super Admin) can perform this action.",
+                "operationId": "deleteMutation",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Mutation ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "12"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success delete mutation data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success delete mutation data"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "You're not authorizated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 403
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "You're not authorizated"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Failed delete mutation data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Failed delete mutation data"
+                                        },
+                                        "data": {
+                                            "type": "string",
+                                            "example": null,
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/iuran/pay": {
+            "get": {
+                "tags": [
+                    "Pay"
+                ],
+                "summary": "Get all pay records for authenticated user",
+                "description": "Retrieve all payment (iuran) data associated with the authenticated user.",
+                "operationId": "getUserPays",
+                "responses": {
+                    "200": {
+                        "description": "Success retrieve all pays data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success retrieve all pays data"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "iuran_id": {
+                                                        "type": "integer",
+                                                        "example": 11
+                                                    },
+                                                    "user_id": {
+                                                        "type": "integer",
+                                                        "example": 14
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "done"
+                                                    },
+                                                    "bank": {
+                                                        "type": "integer",
+                                                        "example": 0
+                                                    },
+                                                    "image": {
+                                                        "type": "string",
+                                                        "example": null,
+                                                        "nullable": true
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2025-05-17T18:54:27.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2025-05-17T19:05:29.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Pay"
+                ],
+                "summary": "Submit iuran payment",
+                "description": "Create a new iuran payment by authenticated user. If bank is not provided, the balance will be deducted directly.",
+                "operationId": "storeIuranPay",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "iuran"
+                                ],
+                                "properties": {
+                                    "iuran": {
+                                        "description": "ID of the iuran",
+                                        "type": "integer",
+                                        "example": 11
+                                    },
+                                    "bank": {
+                                        "description": "Bank number (optional)",
+                                        "type": "integer",
+                                        "example": 123456
+                                    },
+                                    "image": {
+                                        "description": "Proof of payment image (optional)",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success retrieve all pays data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success retrieve all pays data"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 14
+                                                },
+                                                "iuran_id": {
+                                                    "type": "integer",
+                                                    "example": 11
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "yet"
+                                                },
+                                                "bank": {
+                                                    "type": "string",
+                                                    "example": "000000"
+                                                },
+                                                "image": {
+                                                    "type": "string",
+                                                    "example": "iuran/image.jpg"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-17T18:54:27.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-17T19:05:29.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error or insufficient balance",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "You need more balance on wallets"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Iuran not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Failed retrieve iuran data"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/iuran/pay/{id}": {
+            "put": {
+                "tags": [
+                    "Pay"
+                ],
+                "summary": "Update status of iuran payment",
+                "description": "Update the status (done/failed) of a specific iuran payment by authorized users (RT/RW/Super_Admin)",
+                "operationId": "updateIuranPay",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of the Detail Iuran to update",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "status"
+                                ],
+                                "properties": {
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "done",
+                                            "failed"
+                                        ],
+                                        "example": "done"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success update pay",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success update pay"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "done"
+                                                },
+                                                "iuran_id": {
+                                                    "type": "integer",
+                                                    "example": 11
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 14
+                                                },
+                                                "bank": {
+                                                    "type": "string",
+                                                    "example": "000000"
+                                                },
+                                                "image": {
+                                                    "type": "string",
+                                                    "example": "iuran/image.jpg"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Your input is invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Unauthorized access",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 403
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "You're not authorizated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pay not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Pay not found"
                                         }
                                     },
                                     "type": "object"
@@ -2207,6 +4834,975 @@
                 ]
             }
         },
+        "/me": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get the authenticated user's profile",
+                "operationId": "de3936ad40be9d99a380e4fcfcc59871",
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved profile",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success retrieve your profile"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "warga_id": {
+                                                    "type": "string",
+                                                    "example": "3026300139170900"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "format": "email",
+                                                    "example": "fritsch.raheem@nicolas.biz"
+                                                },
+                                                "no_hp": {
+                                                    "type": "string",
+                                                    "example": "+1-602-662-8653"
+                                                },
+                                                "role": {
+                                                    "type": "string",
+                                                    "example": "Super_Admin"
+                                                },
+                                                "aktivasi": {
+                                                    "type": "string",
+                                                    "example": "Activated"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-03T20:22:05.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-03T20:22:05.000000Z"
+                                                },
+                                                "warga": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 4
+                                                        },
+                                                        "nik": {
+                                                            "type": "string",
+                                                            "example": "66662387461305"
+                                                        },
+                                                        "rt_id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "John Doe"
+                                                        },
+                                                        "address": {
+                                                            "type": "string",
+                                                            "example": "Jl. Kebon Jeruk No. 45"
+                                                        },
+                                                        "birth": {
+                                                            "type": "string",
+                                                            "format": "date",
+                                                            "example": "2005-03-17"
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "example": "2025-05-14T09:56:22.000000Z"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "example": "2025-05-14T11:26:49.000000Z"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update current user's profile",
+                "description": "Update the authenticated user's profile and related warga data",
+                "operationId": "profileUpdate",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "address",
+                                    "email",
+                                    "phone",
+                                    "birth"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Full name (min 8 characters)",
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "address": {
+                                        "description": "Full address (min 8 characters)",
+                                        "type": "string",
+                                        "example": "Jl. Kebon Jeruk No. 45"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "cobauser@gmail.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "6289646055420"
+                                    },
+                                    "birth": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2005-03-17"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success update profile",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success update your profile"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "warga_id": {
+                                                    "type": "integer",
+                                                    "example": 4
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "cobauser@gmail.com"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "6289646055420"
+                                                },
+                                                "role": {
+                                                    "type": "string",
+                                                    "example": "Warga"
+                                                },
+                                                "activated": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-14T10:50:35.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-14T11:26:49.000000Z"
+                                                },
+                                                "warga": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "integer",
+                                                            "example": 4
+                                                        },
+                                                        "nik": {
+                                                            "type": "string",
+                                                            "example": "66662387461305"
+                                                        },
+                                                        "rt_id": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "John Doe"
+                                                        },
+                                                        "address": {
+                                                            "type": "string",
+                                                            "example": "Jl. Kebon Jeruk No. 45"
+                                                        },
+                                                        "birth": {
+                                                            "type": "string",
+                                                            "format": "date",
+                                                            "example": "2005-03-17"
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "example": "2025-05-14T09:56:22.000000Z"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "example": "2025-05-14T11:26:49.000000Z"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Your input is invalid"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": {
+                                                "email": [
+                                                    "The email must be a valid email address."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Some error message"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/request": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Create new user",
+                "description": "Create a new user from existing Warga by providing NIK and account credentials",
+                "operationId": "createUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nik",
+                                    "email",
+                                    "phone",
+                                    "password",
+                                    "role"
+                                ],
+                                "properties": {
+                                    "nik": {
+                                        "description": "NIK from warga table (must exist)",
+                                        "type": "string",
+                                        "example": "12345678901234"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "cobauser@gmail.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "6289646055420"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "strongpassword123"
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Admin_RT",
+                                            "Ketua_RT",
+                                            "Admin_RW",
+                                            "Ketua_RW",
+                                            "Warga"
+                                        ],
+                                        "example": "Warga"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success store user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success store user"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 16
+                                                },
+                                                "warga_id": {
+                                                    "type": "integer",
+                                                    "example": 11
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "cobauser@gmail.com"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "6289646055420"
+                                                },
+                                                "role": {
+                                                    "type": "string",
+                                                    "example": "Warga"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-14T11:23:45.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-14T11:23:45.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Your input is invalid"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": {
+                                                "nik": [
+                                                    "The selected nik is invalid."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Some error message"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/activate": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Activate user account",
+                "description": "Activate a user account using NIK",
+                "operationId": "activateUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nik"
+                                ],
+                                "properties": {
+                                    "nik": {
+                                        "description": "NIK (must exist in wargas table)",
+                                        "type": "string",
+                                        "example": "12345678901234"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success activate user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success activate user"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "warga_id": {
+                                                    "type": "integer",
+                                                    "example": 4
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "kamaluddin.arsyad17@gmail.com"
+                                                },
+                                                "phone": {
+                                                    "type": "string",
+                                                    "example": "6289646055430"
+                                                },
+                                                "role": {
+                                                    "type": "string",
+                                                    "example": "Warga"
+                                                },
+                                                "activated": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-14T10:50:35.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-14T11:21:21.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Your input is invalid"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "example": {
+                                                "nik": [
+                                                    "The selected nik is invalid."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Some error message"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/wallet": {
+            "get": {
+                "tags": [
+                    "Wallet"
+                ],
+                "summary": "Get all wallet transactions of authenticated user",
+                "description": "Retrieve all wallet transaction records associated with the authenticated user.",
+                "operationId": "getUserWallets",
+                "responses": {
+                    "200": {
+                        "description": "Success retrieve all wallets data",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success retrieve all wallets data"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "user_id": {
+                                                        "type": "integer",
+                                                        "example": 14
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Top Up"
+                                                    },
+                                                    "variance": {
+                                                        "type": "string",
+                                                        "example": "inflow"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "success"
+                                                    },
+                                                    "value": {
+                                                        "type": "integer",
+                                                        "example": 100000
+                                                    },
+                                                    "before": {
+                                                        "type": "integer",
+                                                        "example": 200000
+                                                    },
+                                                    "after": {
+                                                        "type": "integer",
+                                                        "example": 300000
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2025-05-17T18:37:12.000000Z"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string",
+                                                        "format": "date-time",
+                                                        "example": "2025-05-17T18:37:12.000000Z"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Wallet"
+                ],
+                "summary": "Store a new wallet transaction (Top Up)",
+                "description": "Create a new wallet transaction of type inflow (Top Up) for the authenticated user.",
+                "operationId": "storeWalletTransaction",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "status",
+                                    "value"
+                                ],
+                                "properties": {
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "success",
+                                            "failed"
+                                        ],
+                                        "example": "success"
+                                    },
+                                    "value": {
+                                        "type": "integer",
+                                        "example": 100000
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success store wallet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success store wallet"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 14
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Top Up"
+                                                },
+                                                "variance": {
+                                                    "type": "string",
+                                                    "example": "inflow"
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "success"
+                                                },
+                                                "value": {
+                                                    "type": "integer",
+                                                    "example": 100000
+                                                },
+                                                "before": {
+                                                    "type": "integer",
+                                                    "example": 200000
+                                                },
+                                                "after": {
+                                                    "type": "integer",
+                                                    "example": 300000
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-17T18:37:12.000000Z"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2025-05-17T18:37:12.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Your input is invalid"
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 500
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Error message"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/warga": {
             "get": {
                 "tags": [
@@ -2744,6 +6340,22 @@
             "description": "Auth"
         },
         {
+            "name": "Iuran",
+            "description": "Iuran"
+        },
+        {
+            "name": "Kritik",
+            "description": "Kritik"
+        },
+        {
+            "name": "Mutasi",
+            "description": "Mutasi"
+        },
+        {
+            "name": "Pay",
+            "description": "Pay"
+        },
+        {
             "name": "Proker",
             "description": "Proker"
         },
@@ -2754,6 +6366,14 @@
         {
             "name": "RW",
             "description": "RW"
+        },
+        {
+            "name": "User",
+            "description": "User"
+        },
+        {
+            "name": "Wallet",
+            "description": "Wallet"
         },
         {
             "name": "Warga",

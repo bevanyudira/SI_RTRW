@@ -15,9 +15,11 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Warga::class)->unique()->constrained()->onDelete('cascade');
-            $table->String('email');
-            $table->String('phone');
-            $table->String('password');
+            $table->string('email');
+            $table->string('phone');
+            $table->string('password');
+            $table->integer('balance')->nullable();
+            $table->char('pin', 4)->default('0000');
             $table->enum('role', ['Ketua_RT', 'Ketua_RW', 'Admin_RT', 'Admin_RW', 'Super_Admin', 'Warga']);
             $table->boolean('activated')->default(false);
             $table->timestamps();

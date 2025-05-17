@@ -22,7 +22,8 @@ class UserFactory extends Factory
             "phone" => fake()->phoneNumber(),
             "password" => Hash::make('password'),
             "role" => fake()->randomElement(['Ketua_RT', 'Ketua_RW', 'Admin_RT', 'Admin_RW', 'Super_Admin', 'Warga']),
-            "activated" => fake()->boolean()
+            "activated" => fake()->boolean(),
+            "pin" => fake()->numberBetween(1000, 9999)
         ];
     }
 }

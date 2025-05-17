@@ -157,7 +157,6 @@ class UserController extends Controller
      *     description="Create a new user from existing Warga by providing NIK and account credentials",
      *     operationId="createUser",
      *     tags={"User"},
-     *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(

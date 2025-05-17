@@ -19,7 +19,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Iuran::class);
             $table->foreignIdFor(User::class);
-            $table->enum('status', ['yet', 'pending', 'done', 'failed'])->default('yet');
+            $table->enum('status', ['pending', 'done', 'failed'])->default('pending');
             $table->bigInteger('bank');
             $table->string('image')->nullable();
             $table->timestamps();
