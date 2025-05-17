@@ -14,4 +14,8 @@ class Rw extends Model
     {
         return $this->hasMany(Rt::class);
     }
+    public function iurans()
+    {
+        return $this->hasMany(Iuran::class);
+    }
 }

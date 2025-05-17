@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignIdFor(Rt::class)->nullable();
             $table->foreignIdFor(Rw::class)->nullable();
             $table->string('name');
-            $table->decimal('value', 30, 3);
+            $table->integer('value');
             $table->enum('month',  ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']);
             $table->enum('variance', ['monthly', 'additional']);
             $table->timestamps();

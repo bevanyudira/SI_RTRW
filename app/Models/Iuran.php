@@ -24,4 +24,8 @@ class Iuran extends Model
         }
         return null;
     }
+    public function detail()
+    {
+        return $this->hasMany(DetailIuran::class);
+    }
 }

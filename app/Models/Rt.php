@@ -18,4 +18,8 @@ class Rt extends Model
     {
         return $this->hasMany(Warga::class);
     }
+    public function iurans()
+    {
+        return $this->hasMany(Iuran::class);
+    }
 }
