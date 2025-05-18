@@ -26,6 +26,8 @@ use App\Http\Controllers\Api\WargaController;
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
+    Route::post('reset-password', 'resetPassword');
+    Route::post('change-password', 'changePassword');
 });
 
 Route::controller(UserController::class)->group(function () {

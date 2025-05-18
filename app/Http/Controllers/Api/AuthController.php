@@ -6,7 +6,9 @@ use App\Helper\ResponseTemplate;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -85,11 +87,7 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validasi gagal',
-                'errors' => $validator->errors()
-            ], 422);
+            return ResponseTemplate::send('Your input is invalid', $validator->messages(), 400);
         }
 
         $user = User::where('email', $request->email)->first();
@@ -149,5 +147,134 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return ResponseTemplate::send($e->getMessage(), null, 500);
         }
+    }
+    /**
+     * @OA\Post(
+     *     path="/reset-password",
+     *     summary="Request password reset token",
+     *     tags={"Auth"},
+     *     description="Send password reset token",
+     *     operationId="resetPassword",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email"},
+     *             @OA\Property(property="email", type="string", format="email", example="user@example.com")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Password reset link has been created",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Password reset link has been created")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Validation error",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Your input is invalid"),
+     *             @OA\Property(property="errors", type="object")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="User not found",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="User not found")
+     *         )
+     *     ),
+     *     security={}
+     * )
+     */
+
+    public function resetPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            "email" => "required|string|email"
+        ]);
+
+        if ($validator->fails()) {
+            return ResponseTemplate::send('Your input is invalid', $validator->messages(), 400);
+        }
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return ResponseTemplate::send('User not found', null, 404);
+        }
+        $token = Password::createToken($user);
+
+        return ResponseTemplate::send('Success create password reset token', compact('user', 'token'), 200);
+    }
+    /**
+     * @OA\Post(
+     *     path="/change-password",
+     *     summary="Change user password using reset token",
+     *     tags={"Auth"},
+     *     description="Change user password using reset token",
+     *     operationId="changePassword",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email", "token", "password", "password_confirmation"},
+     *             @OA\Property(property="email", type="string", format="email", example="user@example.com"),
+     *             @OA\Property(property="token", type="string", example="your-reset-token"),
+     *             @OA\Property(property="password", type="string", format="password", example="newPassword123"),
+     *             @OA\Property(property="password_confirmation", type="string", format="password", example="newPassword123")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Password changed successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Password changed successfully"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="user", type="object",
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="email", type="string", example="user@example.com")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Invalid token or input",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Invalid token or user not found")
+     *         )
+     *     ),
+     *     security={}
+     * )
+     */
+
+    public function changePassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            "email" => "required|string|email",
+            "token" => "required|string",
+            "password" => "required|string|confirmed|min:8",
+        ]);
+
+        if ($validator->fails()) {
+            return ResponseTemplate::send('Your input is invalid', $validator->messages(), 400);
+        }
+
+        $user = User::where('email', $request->email)->first();
+        $token = DB::table('password_reset_tokens')->where('email', $request->email)->first();
+
+        if (!$user || !$token) {
+            return ResponseTemplate::send('Invalid token or user not found', null, 400);
+        }
+
+        if (!Hash::check($request->token, $token->token)) {
+            return ResponseTemplate::send('Invalid token', null, 400);
+        }
+
+        $user->update(["password" => Hash::make($request->password)]);
+
+        DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+
+        return ResponseTemplate::send('Password changed successfully', compact('user'), 200);
     }
 }
