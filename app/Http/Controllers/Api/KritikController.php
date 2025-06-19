@@ -50,7 +50,7 @@ class KritikController extends Controller
 
     public function index()
     {
-        $kritik = Kritik::all();
+        $kritik = Kritik::with('user.warga')->get();
         return ResponseTemplate::send('Success retrieve all kritik data', $kritik, 200);
     }
 
@@ -196,7 +196,7 @@ class KritikController extends Controller
 
     public function show(string $id)
     {
-        $kritik = Kritik::find($id);
+        $kritik = Kritik::with('user.warga')->find($id);
         if ($kritik) {
             return ResponseTemplate::send('Success retrieve kritik data', $kritik, 200);
         } else {

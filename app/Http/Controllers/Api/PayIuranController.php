@@ -158,9 +158,9 @@ class PayIuranController extends Controller
             }
         }
         $image = null;
-        if ($request->hasFile('image')) {
-            $image = Storage::disk('public')->put('iuran', $request->file('image$image = '));
-        }
+if ($request->hasFile('image')) {
+    $image = Storage::disk('public')->put('iuran', $request->file('image'));
+}
         if (!$request->bank) {
             $data["before"] = $user->balance;
             $user->balance = $user->balance - $iuran->value;
@@ -172,7 +172,7 @@ class PayIuranController extends Controller
             $data["value"] = $iuran->value;
             Wallet::create($data);
         }
-        $detail = DetailIuran::create(["user_id" => $user->id, "iuran_id" => $iuran->id, "status" => "yet", "bank" => $request->bank ?? "000000", "image" => $image]);
+        $detail = DetailIuran::create(["user_id" => $user->id, "iuran_id" => $iuran->id, "status" => "done", "bank" => $request->bank ?? "000000", "image" => $image]);
         return ResponseTemplate::send('Success retrieve all pays data', $detail, 200);
     }
     /**
